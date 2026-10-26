@@ -20,7 +20,7 @@ final class SettingsPanel: UIView {
     init(current: String) {
         self.current = current
         super.init(frame: .zero)
-        backgroundColor = KeyColors.background
+        backgroundColor = KeyColors.canvas
 
         title.text = "Layouts"
         title.font = .boldSystemFont(ofSize: 16)

@@ -2,6 +2,11 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.3.5] — 2026-10-26
+### Fixed
+- No more separate rounded strip above the suggestion bar on iOS 26. iOS 26 draws its own glass panel around every keyboard, with a little padding above the keys that apps can't draw into. Our grey background didn't match that panel, so the padding showed as a stripe. On iOS 26 the keyboard background is now transparent and blends into the system panel; older iOS versions keep the grey background.
+- The emoji and settings panels now hide the keys and the bar behind them, so nothing shows through the transparent background.
+
 ## [0.3.4] — 2026-10-26
 
 ### Changed

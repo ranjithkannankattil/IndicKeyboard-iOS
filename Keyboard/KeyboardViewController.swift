@@ -54,7 +54,7 @@ final class KeyboardViewController: UIInputViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = KeyColors.background
+        view.backgroundColor = KeyColors.canvas
         view.clipsToBounds = false
         // Ask for the full height as early as possible (iOS 26 applies it, if at all, when the
         // keyboard is first sized). The keys adapt to whatever height iOS actually grants.
@@ -366,6 +366,8 @@ final class KeyboardViewController: UIInputViewController {
     // MARK: Emoji panel
 
     private func openEmoji() {
+        keysView.isHidden = true
+        candidateBar.isHidden = true
         composer.commit()
         let p = EmojiPanel(frame: view.bounds)
         p.landscape = isLandscape
@@ -380,6 +382,8 @@ final class KeyboardViewController: UIInputViewController {
     }
 
     private func closeEmoji() {
+        keysView.isHidden = false
+        candidateBar.isHidden = false
         emojiPanel?.removeFromSuperview()
         emojiPanel = nil
         page = .letters
@@ -391,6 +395,8 @@ final class KeyboardViewController: UIInputViewController {
     // MARK: Settings panel
 
     private func openSettings() {
+        keysView.isHidden = true
+        candidateBar.isHidden = true
         composer.commit()
         updateCandidates()
         let p = SettingsPanel(current: layout.id)
@@ -414,6 +420,8 @@ final class KeyboardViewController: UIInputViewController {
     }
 
     private func closeSettings() {
+        keysView.isHidden = false
+        candidateBar.isHidden = false
         settingsPanel?.removeFromSuperview()
         settingsPanel = nil
         rebuildKeys()

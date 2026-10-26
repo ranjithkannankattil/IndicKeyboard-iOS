@@ -35,6 +35,13 @@ enum KeyColors {
     static let text = UIColor.label
     static let hint = UIColor.secondaryLabel
     static let accent = UIColor.systemBlue
+    /// Behind the keys. On iOS 26 the system draws its own rounded glass keyboard panel
+    /// (with a band above our view); a clear background lets that panel show through so
+    /// the keyboard reads as one piece, like Apple's.
+    static var canvas: UIColor {
+        if #available(iOS 26.0, *) { return .clear }
+        return background
+    }
 }
 
 /// iOS keyboard geometry (iPhone). Measured from the system keyboard: 3pt side

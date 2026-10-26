@@ -56,7 +56,7 @@ final class EmojiPanel: UIView, UICollectionViewDataSource, UICollectionViewDele
         flow.minimumLineSpacing = 0
         grid = UICollectionView(frame: .zero, collectionViewLayout: flow)
         super.init(frame: frame)
-        backgroundColor = KeyColors.background
+        backgroundColor = KeyColors.canvas
 
         titleLabel.font = .systemFont(ofSize: 12, weight: .semibold)
         titleLabel.textColor = .secondaryLabel
