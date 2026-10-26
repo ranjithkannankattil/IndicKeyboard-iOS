@@ -3,7 +3,7 @@
  "defaultEnabled": ["ml-swanalekha", "en"],
  "layouts": [
   {"id": "ml-swanalekha", "name": "സ്വനലേഖ", "subtitle": "Swanalekha · phonetic", "short": "സ്വ", "kind": "transliteration", "file": "ml-swanalekha"},
-  {"id": "en", "name": "English", "subtitle": "QWERTY", "short": "EN", "kind": "english"},
+  {"id": "en", "name": "English (India)", "subtitle": "QWERTY · leaves Manglish alone", "short": "EN", "kind": "english"},
   {"id": "ml-transliteration", "name": "ലിപ്യന്തരണം", "subtitle": "Mozhi-style transliteration", "short": "ലി", "kind": "transliteration", "file": "ml-transliteration"},
   {"id": "ml-lalitha", "name": "മലയാളം", "subtitle": "Lalitha · direct", "short": "മ", "kind": "direct", "file": "ml-lalitha"},
   {"id": "ml-compact", "name": "മലയാളം Compact", "subtitle": "Compact · direct", "short": "മ", "kind": "direct", "file": "ml-compact"},

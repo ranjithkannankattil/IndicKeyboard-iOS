@@ -70,6 +70,12 @@ final class SettingsPanel: UIView {
             self?.settings.autocorrect = on
             self?.onChange?()
         }, tapped: nil))
+        stack.addArrangedSubview(row(title: "Leave Manglish alone", subtitle: "English: don't correct Malayalam typed in English letters (enthu, alle, machane)",
+                                     isOn: settings.manglishFriendly, isCurrent: false,
+                                     toggled: { [weak self] on in
+            self?.settings.manglishFriendly = on
+            self?.onChange?()
+        }, tapped: nil))
         stack.addArrangedSubview(row(title: "Predictive", subtitle: "English: word suggestions above the keys",
                                      isOn: settings.predictive, isCurrent: false,
                                      toggled: { [weak self] on in

@@ -55,6 +55,12 @@ public final class KeyboardSettings {
         set { defaults.set(newValue, forKey: "autocorrect") }
     }
 
+    /// English: never autocorrect Malayalam words typed in English letters (Manglish).
+    public var manglishFriendly: Bool {
+        get { defaults.object(forKey: "manglishFriendly") as? Bool ?? true }
+        set { defaults.set(newValue, forKey: "manglishFriendly") }
+    }
+
     /// English: show word suggestions above the keys.
     public var predictive: Bool {
         get { defaults.object(forKey: "predictive") as? Bool ?? true }

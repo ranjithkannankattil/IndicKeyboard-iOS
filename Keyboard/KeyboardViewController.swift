@@ -183,6 +183,7 @@ final class KeyboardViewController: UIInputViewController {
 
     private func applySettings() {
         composer.useMarkedText = settings.underlineWhileComposing
+        english.manglishFriendly = settings.manglishFriendly
     }
 
     private func updateAppearance() {

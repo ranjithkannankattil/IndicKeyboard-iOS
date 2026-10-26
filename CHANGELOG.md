@@ -2,6 +2,14 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.4.0] — 2026-10-26
+### Added
+- **English (India), Manglish-friendly.** The English keyboard now uses Apple's Indian English dictionary when the phone has it, and it no longer autocorrects Malayalam typed in English letters. It knows about 660 common Manglish words and their spellings (enthu, alle, machane, evide, kollaam, pwoli…), including stretched ones like enthaaa. It also skips words with spellings English rarely uses (aa, ii, uu, zh, and endings like -nnu, -ille, -aano, -yude).
+- Manglish completions in the suggestion bar: type *mach* and it offers *machane*.
+- New setting **Leave Manglish alone** (on by default) in the keyboard's ⚙ panel.
+### Changed
+- If you undo a correction with backspace, the keyboard now remembers that word permanently, not just until the keyboard restarts.
+
 ## [0.3.6] — 2026-10-26
 ### Fixed
 - Switching from Swanalekha to English no longer turns on Shift in the middle of a sentence. The keyboard now counts the Malayalam word it has just written instead of trusting the text field's context, which is still empty for a moment after the switch.

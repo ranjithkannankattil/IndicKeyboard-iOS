@@ -59,7 +59,7 @@ public enum LayoutCatalog {
             defaults = (j["defaultEnabled"] as? [String]) ?? defaults
         }
         if layouts.isEmpty {
-            layouts = [LayoutInfo(id: "en", name: "English", subtitle: "QWERTY", short: "EN", kind: .english, file: nil)]
+            layouts = [LayoutInfo(id: "en", name: "English (India)", subtitle: "QWERTY · leaves Manglish alone", short: "EN", kind: .english, file: nil)]
         }
         loaded = (layouts, defaults)
         return (layouts, defaults)

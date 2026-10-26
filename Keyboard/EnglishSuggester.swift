@@ -10,8 +10,14 @@ final class EnglishSuggester {
     /// Words from the user's Text Replacements (Settings → Keyboard) and their expansions.
     private var shortcuts: [String: String] = [:]
     private var knownWords = Set<String>()
-    /// Words the user rejected a correction for; never corrected again this session.
+    /// Words the user rejected a correction for; never corrected again (kept across launches).
     private var ignored = Set<String>()
+    private static let ignoredKey = "learnedWords"
+    /// Common Malayalam words typed in English letters (Manglish), from manglish.json.
+    private var manglish = Set<String>()
+    private var manglishSorted: [String] = []
+    /// When on, Manglish-looking words are never autocorrected.
+    var manglishFriendly = true
 
     private static let contractions: [String: String] = [
         "i": "I", "im": "I'm", "ive": "I've", "id": "I'd", "ill": "I'll",
@@ -28,8 +34,40 @@ final class EnglishSuggester {
     init() {
         let available = UITextChecker.availableLanguages
         let region = Locale.current.region?.identifier ?? "US"
-        let preferred = ["en_\(region)", "en_GB", "en_US", "en"]
+        // Indian English first: its dictionary and spellings (colour, programme) fit Kerala users.
+        let preferred = ["en_IN", "en_\(region)", "en_GB", "en_US", "en"]
         language = preferred.first { available.contains($0) } ?? available.first { $0.hasPrefix("en") } ?? "en_US"
+        ignored = Set(UserDefaults.standard.stringArray(forKey: Self.ignoredKey) ?? [])
+        if let url = ResourceLocator.bundle.url(forResource: "manglish", withExtension: "json")
+                ?? ResourceLocator.bundle.url(forResource: "manglish", withExtension: "json", subdirectory: "Resources"),
+           let data = try? Data(contentsOf: url),
+           let words = try? JSONSerialization.jsonObject(with: data) as? [String] {
+            manglish = Set(words)
+            manglishSorted = words.sorted()
+        }
+    }
+
+    /// True for Malayalam words written in English letters: the bundled list, plus
+    /// spellings English rarely uses (aa, ii, uu, zh, endings like -nnu, -ille, -aano).
+    func looksManglish(_ word: String) -> Bool {
+        let w = word.lowercased()
+        // Stretched words ("enthaaa", "pwolii") count as their shorter forms.
+        let squeezed = Self.squeeze(w, max: 2), single = Self.squeeze(w, max: 1)
+        if manglish.contains(w) || manglish.contains(squeezed) || manglish.contains(single) { return true }
+        guard w.count >= 3 else { return false }
+        if w.contains("aa") || w.contains("ii") || w.contains("uu") || w.contains("zh") { return true }
+        let endings = ["nnu", "ille", "illa", "aano", "aanu", "alle", "ayi", "aayi", "yude", "inte", "ikku", "akku", "kko", "atte", "unnu", "nju", "athu", "undo", "ndo"]
+        return endings.contains { w.hasSuffix($0) && w.count > $0.count + 1 }
+    }
+
+    private static func squeeze(_ s: String, max: Int) -> String {
+        var out = "", last: Character? = nil, run = 0
+        for c in s {
+            run = (c == last) ? run + 1 : 1
+            last = c
+            if run <= max { out.append(c) }
+        }
+        return out
     }
 
     /// Text Replacements and contact names (contacts only arrive with Full Access).
@@ -44,6 +82,7 @@ final class EnglishSuggester {
     func ignore(_ word: String) {
         ignored.insert(word.lowercased())
         UITextChecker.learnWord(word)
+        UserDefaults.standard.set(Array(ignored).sorted(), forKey: Self.ignoredKey)
     }
 
     // MARK: Queries
@@ -63,6 +102,7 @@ final class EnglishSuggester {
         if let s = shortcuts[lower] { return s }
         if let c = Self.contractions[lower], !Self.ambiguous.contains(lower) { return matchCase(c, like: word) }
         guard word.count >= 2, isMisspelled(word) else { return nil }
+        if manglishFriendly, looksManglish(word) { return nil }
         // All-caps words are usually acronyms; leave them.
         if word == word.uppercased() { return nil }
         let ns = word as NSString
@@ -84,7 +124,14 @@ final class EnglishSuggester {
         }
         if let s = shortcuts[lower] { add(s) }
         if let c = Self.contractions[lower] { add(matchCase(c, like: word)) }
-        if isMisspelled(word) {
+        if manglishFriendly, word.count >= 2 {
+            // Manglish completions: "mach" → machane, machan.
+            var n = 0
+            for m in manglishSorted where n < 2 && m.hasPrefix(lower) && m.count > lower.count {
+                add(matchCase(m, like: word)); n += 1
+            }
+        }
+        if isMisspelled(word), !(manglishFriendly && looksManglish(word)) {
             (checker.guesses(forWordRange: range, in: word, language: language) ?? []).prefix(3).forEach { add(matchCase($0, like: word)) }
         }
         (checker.completions(forPartialWordRange: range, in: word, language: language) ?? [])
