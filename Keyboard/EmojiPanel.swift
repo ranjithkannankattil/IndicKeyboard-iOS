@@ -66,6 +66,7 @@ final class EmojiPanel: UIView, UICollectionViewDataSource, UICollectionViewDele
         grid.dataSource = self
         grid.delegate = self
         grid.register(EmojiCell.self, forCellWithReuseIdentifier: "e")
+        grid.disableEdgeFades()
 
         abcButton.setTitle("ABC", for: .normal)
         abcButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .medium)
@@ -100,8 +101,8 @@ final class EmojiPanel: UIView, UICollectionViewDataSource, UICollectionViewDele
     override func layoutSubviews() {
         super.layoutSubviews()
         let barH: CGFloat = landscape ? 34 : 40
-        titleLabel.frame = CGRect(x: 12, y: 6, width: bounds.width - 24, height: 18)
-        grid.frame = CGRect(x: 0, y: 26, width: bounds.width, height: bounds.height - 26 - barH)
+        titleLabel.frame = CGRect(x: 12, y: 4, width: bounds.width - 24, height: 18)
+        grid.frame = CGRect(x: 0, y: 24, width: bounds.width, height: bounds.height - 24 - barH)
         bar.frame = CGRect(x: 0, y: bounds.height - barH, width: bounds.width, height: barH)
         abcButton.frame = CGRect(x: 4, y: 0, width: 48, height: barH)
         deleteButton.frame = CGRect(x: bounds.width - 52, y: 0, width: 48, height: barH)

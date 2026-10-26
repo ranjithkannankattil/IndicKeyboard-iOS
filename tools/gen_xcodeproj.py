@@ -43,7 +43,7 @@ proj_r = dict(base, DEBUG_INFORMATION_FORMAT='dwarf-with-dsym', ENABLE_NS_ASSERT
 common_t = {'CODE_SIGN_STYLE': 'Automatic', 'CURRENT_PROJECT_VERSION': '1', 'DEVELOPMENT_TEAM': TEAM,
             'MARKETING_VERSION': '1.0', 'PRODUCT_NAME': '$(TARGET_NAME)', 'TARGETED_DEVICE_FAMILY': '1,2',
             'GENERATE_INFOPLIST_FILE': 'YES', 'SWIFT_EMIT_LOC_STRINGS': 'YES'}
-app = dict(common_t, PRODUCT_BUNDLE_IDENTIFIER=f'{ORG}.IndicKeyboard',
+app = dict(common_t, ASSETCATALOG_COMPILER_APPICON_NAME='AppIcon', PRODUCT_BUNDLE_IDENTIFIER=f'{ORG}.IndicKeyboard',
            INFOPLIST_KEY_CFBundleDisplayName='Indic Keyboard',
            INFOPLIST_KEY_UIApplicationSceneManifest_Generation='YES',
            INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents='YES',

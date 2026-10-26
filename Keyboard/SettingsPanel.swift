@@ -31,6 +31,7 @@ final class SettingsPanel: UIView {
         header.addSubview(done)
         addSubview(header)
 
+        scroll.disableEdgeFades()
         stack.axis = .vertical
         stack.spacing = 1
         scroll.addSubview(stack)

@@ -2,6 +2,19 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.3.1] — 2026-10-26
+
+### Added
+- **App icon**: a ര keycap above a row of keys, on blue. Drawn by `tools/make_icon.swift`.
+- **[docs/INSTALL.md](docs/INSTALL.md)**: a step-by-step install guide for people new to Xcode, covering Xcode, Apple ID signing, Developer Mode, trusting the developer, enabling the keyboard, the 7-day limit, updating, the simulator and troubleshooting.
+
+### Fixed
+- **Emoji panel's top row looked faded.** iOS 26 adds a soft fade ("scroll edge effect") to the edges of scrolling views. It is now turned off for the emoji grid, the suggestion bar and the settings list, so they stay crisp.
+- **Keys felt slower than the Apple keyboard.**
+  - iOS was holding touches near the screen edges (bottom row, `q`, `p`, shift, delete) while it checked for system gestures. The keyboard now tells iOS not to delay its touches.
+  - Suggestions (spell checker, transliteration alternatives) are now worked out right after each keystroke has gone to the app, instead of before, so typing never waits for them.
+  - Key and pop-up shadows use precomputed outlines, so drawing a key press is cheaper.
+
 ## [0.3.0] — 2026-10-26
 
 ### Added

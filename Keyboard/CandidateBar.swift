@@ -30,6 +30,7 @@ final class CandidateBar: UIView {
         settingsButton.accessibilityLabel = "Keyboard settings"
 
         scroll.showsHorizontalScrollIndicator = false
+        scroll.disableEdgeFades()
         scroll.alwaysBounceHorizontal = false
 
         idleLabel.font = .systemFont(ofSize: 14)

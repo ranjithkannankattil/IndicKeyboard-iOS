@@ -104,6 +104,14 @@ final class KeyboardViewController: UIInputViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         installHeightConstraint()
+        // iOS delays touches near the screen edges while it checks for system gestures,
+        // which makes the bottom row and edge keys feel slow. Keys must respond at once.
+        var v: UIView? = view
+        while let cur = v {
+            cur.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false }
+            v = cur.superview
+        }
+        view.window?.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false }
     }
 
     private var isLandscape: Bool {
@@ -220,7 +228,21 @@ final class KeyboardViewController: UIInputViewController {
 
     // MARK: Candidates
 
+    private var candidatesPending = false
+
+    /// Suggestions are worked out just after the keystroke has gone to the app,
+    /// so typing never waits for the spell checker or the transliteration engine.
     private func updateCandidates() {
+        guard !candidatesPending else { return }
+        candidatesPending = true
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.candidatesPending = false
+            self.refreshCandidates()
+        }
+    }
+
+    private func refreshCandidates() {
         if layout.kind == .transliteration, composer.isComposing, let e = engine {
             let keys = composer.keys
             let current = e.output(for: keys)

@@ -14,6 +14,18 @@ protocol KeysViewDelegate: AnyObject {
     func keysViewDidLayout(_ v: KeysView)
 }
 
+extension UIScrollView {
+    /// iOS 26 softly fades scroll content at its edges; keyboard panels must stay crisp.
+    func disableEdgeFades() {
+        if #available(iOS 26.0, *) {
+            topEdgeEffect.isHidden = true
+            bottomEdgeEffect.isHidden = true
+            leftEdgeEffect.isHidden = true
+            rightEdgeEffect.isHidden = true
+        }
+    }
+}
+
 enum KeyColors {
     static let background = UIColor { $0.userInterfaceStyle == .dark ? UIColor(white: 0.13, alpha: 1) : UIColor(red: 0.82, green: 0.83, blue: 0.85, alpha: 1) }
     static let key = UIColor { $0.userInterfaceStyle == .dark ? UIColor(white: 0.42, alpha: 1) : .white }
@@ -133,6 +145,7 @@ final class KeyCapView: UIView {
         label.frame = bounds.insetBy(dx: 2, dy: 1)
         icon.frame = bounds
         hintLabel.frame = CGRect(x: 2, y: 1, width: bounds.width - 5, height: 12)
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
 }
 
@@ -450,6 +463,7 @@ final class PreviewBalloon: UIView {
         x = min(max(0, x), bounds.width - w)
         frame = CGRect(x: x, y: max(-50, keyFrame.minY - h - 2), width: w, height: h)
         label.frame = self.bounds.insetBy(dx: 4, dy: 2)
+        layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: 10).cgPath
         isHidden = false
         superview?.bringSubviewToFront(self)
     }
@@ -497,6 +511,7 @@ final class AlternativesPopup: UIView {
             l.frame = CGRect(x: 4 + CGFloat(i) * cellWidth, y: 3, width: cellWidth, height: h - 6)
         }
         selected = 0
+        layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: 10).cgPath
         isHidden = false
         superview?.bringSubviewToFront(self)
     }
