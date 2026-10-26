@@ -32,15 +32,22 @@ enum KeyboardRows {
     static let qwerty = ["qwertyuiop", "asdfghjkl", "zxcvbnm"]
 
     /// Letter rows for English / transliteration layouts.
-    static func latin(shift: ShiftState) -> [[KeySpec]] {
+    static func latin(shift: ShiftState, transliteration: Bool = false) -> [[KeySpec]] {
         var rows = qwerty.map { row in
             row.map { ch -> KeySpec in
                 let s = shift == .off ? String(ch) : String(ch).uppercased()
                 return KeySpec(label: s, action: .character(s))
             }
         }
-        rows[2].insert(shiftKey(shift), at: 0)
-        rows[2].append(backspaceKey)
+        if transliteration {
+            // ~ after m for Swanalekha chillu (njaan~ → ഞാൻ); _ and ^ on long press.
+            rows[2].append(KeySpec(label: "~", hint: "_^", action: .character("~"), more: ["_", "^"]))
+            rows[2].insert(KeySpec(label: shiftKey(shift).label, action: .shift, width: 1.25, isFunction: true), at: 0)
+            rows[2].append(KeySpec(label: "⌫", action: .backspace, width: 1.25, isFunction: true))
+        } else {
+            rows[2].insert(shiftKey(shift), at: 0)
+            rows[2].append(backspaceKey)
+        }
         return rows
     }
 

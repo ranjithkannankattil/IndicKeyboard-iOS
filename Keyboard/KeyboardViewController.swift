@@ -146,7 +146,7 @@ final class KeyboardViewController: UIInputViewController {
         case .symbols: return KeyboardRows.symbols()
         case .letters:
             if let d = direct { return KeyboardRows.direct(d, shift: shift) }
-            return KeyboardRows.latin(shift: shift)
+            return KeyboardRows.latin(shift: shift, transliteration: layout.kind == .transliteration)
         }
     }
 
