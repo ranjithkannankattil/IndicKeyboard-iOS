@@ -56,6 +56,26 @@ final class SettingsPanel: UIView {
                 self?.onChoose?(info.id)
             })
         }
+        stack.addArrangedSubview(sectionLabel("Speed check — type a bit, then open ⚙"))
+        for (name, value) in SpeedMeter.shared.lines {
+            let v = UIView()
+            v.backgroundColor = KeyColors.key
+            let t = UILabel(), s = UILabel()
+            t.text = name; t.font = .systemFont(ofSize: 15); t.textColor = KeyColors.text
+            s.text = value; s.font = .monospacedDigitSystemFont(ofSize: 12, weight: .regular); s.textColor = KeyColors.hint
+            s.adjustsFontSizeToFitWidth = true; s.minimumScaleFactor = 0.7
+            let col = UIStackView(arrangedSubviews: [t, s])
+            col.axis = .vertical; col.spacing = 2
+            col.translatesAutoresizingMaskIntoConstraints = false
+            v.addSubview(col)
+            NSLayoutConstraint.activate([
+                col.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: 14),
+                col.trailingAnchor.constraint(equalTo: v.trailingAnchor, constant: -14),
+                col.centerYAnchor.constraint(equalTo: v.centerYAnchor),
+                v.heightAnchor.constraint(equalToConstant: 50),
+            ])
+            stack.addArrangedSubview(v)
+        }
         stack.addArrangedSubview(sectionLabel("Typing"))
         stack.addArrangedSubview(row(title: "Underline word while typing",
                                      subtitle: "Turn off if an app duplicates or loses letters",

@@ -62,20 +62,20 @@ final class CandidateBar: UIView {
         if items.count <= 3 {
             // Equal slots across the bar, like the iOS predictive bar.
             let slot = W / CGFloat(max(1, items.count))
-            for (i, b) in buttons.enumerated() {
+            for (i, b) in buttons.prefix(items.count).enumerated() {
                 b.frame = CGRect(x: CGFloat(i) * slot + 3, y: 2, width: slot - 6, height: h - 4)
             }
-            for (i, s) in separators.enumerated() {
+            for (i, s) in separators.prefix(max(0, items.count - 1)).enumerated() {
                 s.frame = CGRect(x: slot * CGFloat(i + 1), y: h * 0.25, width: hairline, height: h * 0.5)
             }
             scroll.contentSize = scroll.bounds.size
         } else {
             var x: CGFloat = 4
-            for (i, b) in buttons.enumerated() {
+            for (i, b) in buttons.prefix(items.count).enumerated() {
                 let w = max(56, b.intrinsicContentSize.width + 24)
                 b.frame = CGRect(x: x, y: 2, width: w, height: h - 4)
                 x += w
-                if i < separators.count {
+                if i < items.count - 1, i < separators.count {
                     separators[i].frame = CGRect(x: x, y: h * 0.25, width: hairline, height: h * 0.5)
                 }
             }
@@ -83,41 +83,47 @@ final class CandidateBar: UIView {
         }
     }
 
+    /// Updates the bar in place: buttons are kept and only their text and style change,
+    /// so a refresh between two key taps costs almost nothing.
     func show(_ list: [BarItem]) {
-        guard list != items || buttons.count != list.count else { return }
+        guard list != items else { return }
         items = list
-        buttons.forEach { $0.removeFromSuperview() }
-        separators.forEach { $0.removeFromSuperview() }
-        buttons = []
-        separators = []
         idleLabel.isHidden = !list.isEmpty
-        for (i, item) in list.enumerated() {
-            let b = UIButton(type: .system)
-            b.setTitle(item.title, for: .normal)
-            b.titleLabel?.font = item.bold ? .systemFont(ofSize: 18, weight: .semibold) : .systemFont(ofSize: 18)
+        while buttons.count < list.count {
+            let b = UIButton(type: .custom)
             b.titleLabel?.adjustsFontSizeToFitWidth = true
             b.titleLabel?.minimumScaleFactor = 0.6
             b.titleLabel?.lineBreakMode = .byTruncatingMiddle
-            b.setTitleColor(item.dim ? .secondaryLabel : .label, for: .normal)
-            if item.bold {
-                b.backgroundColor = UIColor.label.withAlphaComponent(0.08)
-                b.layer.cornerRadius = 8
-                b.layer.cornerCurve = .continuous
-            }
-            b.tag = i
+            b.layer.cornerRadius = 8
+            b.layer.cornerCurve = .continuous
+            b.tag = buttons.count
             b.addTarget(self, action: #selector(candidateTapped(_:)), for: .touchUpInside)
             scroll.addSubview(b)
             buttons.append(b)
-            if i < list.count - 1 {
-                let s = UIView()
-                s.backgroundColor = .separator
-                scroll.addSubview(s)
-                separators.append(s)
-            }
         }
+        while separators.count < max(0, list.count - 1) {
+            let s = UIView()
+            s.backgroundColor = .separator
+            scroll.addSubview(s)
+            separators.append(s)
+        }
+        for (i, b) in buttons.enumerated() {
+            guard i < list.count else { b.isHidden = true; continue }
+            let item = list[i]
+            b.isHidden = false
+            b.setTitle(item.title, for: .normal)
+            b.titleLabel?.font = item.bold ? Self.boldFont : Self.plainFont
+            b.setTitleColor(item.dim ? .secondaryLabel : .label, for: .normal)
+            b.setTitleColor(.tertiaryLabel, for: .highlighted)
+            b.backgroundColor = item.bold ? UIColor.label.withAlphaComponent(0.08) : nil
+        }
+        for (i, s) in separators.enumerated() { s.isHidden = i >= list.count - 1 }
         scroll.contentOffset = .zero
         setNeedsLayout()
     }
+
+    private static let plainFont = UIFont.systemFont(ofSize: 18)
+    private static let boldFont = UIFont.systemFont(ofSize: 18, weight: .semibold)
 
     func showIdle(_ text: String) {
         show([])

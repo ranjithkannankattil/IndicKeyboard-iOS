@@ -5,7 +5,12 @@
 import UIKit
 
 final class EnglishSuggester {
-    private let checker = UITextChecker()
+    private let mainChecker = UITextChecker()
+    /// Suggestions are worked out on a background queue with their own checker.
+    private let backgroundChecker = UITextChecker()
+    private var checker: UITextChecker { Thread.isMainThread ? mainChecker : backgroundChecker }
+    private let lock = NSLock()
+    private func locked<T>(_ f: () -> T) -> T { lock.lock(); defer { lock.unlock() }; return f() }
     let language: String
     /// Words from the user's Text Replacements (Settings → Keyboard) and their expansions.
     private var shortcuts: [String: String] = [:]
@@ -17,7 +22,11 @@ final class EnglishSuggester {
     private var manglish = Set<String>()
     private var manglishSorted: [String] = []
     /// When on, Manglish-looking words are never autocorrected.
-    var manglishFriendly = true
+    private var _manglishFriendly = true
+    var manglishFriendly: Bool {
+        get { locked { _manglishFriendly } }
+        set { locked { _manglishFriendly = newValue } }
+    }
 
     private static let contractions: [String: String] = [
         "i": "I", "im": "I'm", "ive": "I've", "id": "I'd", "ill": "I'll",
@@ -72,17 +81,19 @@ final class EnglishSuggester {
 
     /// Text Replacements and contact names (contacts only arrive with Full Access).
     func load(lexicon: UILexicon) {
-        for e in lexicon.entries {
-            let key = e.userInput.lowercased()
-            if key != e.documentText.lowercased() { shortcuts[key] = e.documentText }
-            knownWords.insert(e.documentText.lowercased())
+        locked {
+            for e in lexicon.entries {
+                let key = e.userInput.lowercased()
+                if key != e.documentText.lowercased() { shortcuts[key] = e.documentText }
+                knownWords.insert(e.documentText.lowercased())
+            }
         }
     }
 
     func ignore(_ word: String) {
-        ignored.insert(word.lowercased())
+        let all: [String] = locked { ignored.insert(word.lowercased()); return Array(ignored).sorted() }
         UITextChecker.learnWord(word)
-        UserDefaults.standard.set(Array(ignored).sorted(), forKey: Self.ignoredKey)
+        UserDefaults.standard.set(all, forKey: Self.ignoredKey)
     }
 
     // MARK: Queries
@@ -97,9 +108,9 @@ final class EnglishSuggester {
     /// The correction space would apply, if any.
     func autocorrection(for word: String) -> String? {
         let lower = word.lowercased()
-        guard !word.isEmpty, !ignored.contains(lower), !knownWords.contains(lower),
+        guard !word.isEmpty, !locked({ ignored.contains(lower) || knownWords.contains(lower) }),
               word.unicodeScalars.allSatisfy({ CharacterSet.letters.contains($0) || $0 == "'" }) else { return nil }
-        if let s = shortcuts[lower] { return s }
+        if let s = locked({ shortcuts[lower] }) { return s }
         if let c = Self.contractions[lower], !Self.ambiguous.contains(lower) { return matchCase(c, like: word) }
         guard word.count >= 2, isMisspelled(word) else { return nil }
         if manglishFriendly, looksManglish(word) { return nil }
@@ -122,7 +133,7 @@ final class EnglishSuggester {
         func add(_ s: String) {
             if !out.contains(where: { $0.lowercased() == s.lowercased() }), s.lowercased() != lower { out.append(s) }
         }
-        if let s = shortcuts[lower] { add(s) }
+        if let s = locked({ shortcuts[lower] }) { add(s) }
         if let c = Self.contractions[lower] { add(matchCase(c, like: word)) }
         if manglishFriendly, word.count >= 2 {
             // Manglish completions: "mach" → machane, machan.

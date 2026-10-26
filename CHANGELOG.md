@@ -2,6 +2,16 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.4.2] — 2026-10-26
+### Added
+- **Speed check** in the keyboard's ⚙ panel: average and worst times for the keyboard's own work per key, the app's reply, and the suggestion bar. Only timings are kept, never text.
+### Fixed
+- Taps no longer wait for the suggestion bar. Measured on an iPhone 15, the keyboard's own work was under 1 ms per key, but refreshing the bar took 8 ms on average and up to 36 ms. At normal typing speed that refresh landed between keys, so the next tap had to wait. Now:
+  - English spell-checking runs on a background queue, and an out-of-date answer is dropped.
+  - The bar keeps its buttons and only changes their text instead of rebuilding them.
+  - The bar refreshes after 40 ms instead of 70 ms, since it no longer holds up typing.
+- Light/dark mode is only reapplied when it actually changes, instead of after every edit (which could redraw every key).
+
 ## [0.4.1] — 2026-10-26
 ### Fixed
 - Quick repeated taps ("aa", "ll") and keys at the screen edges (a, q, z, the bottom row) responded late. iOS held back the *end* of touches near the edges while it checked for its own swipe gestures, and keys type when the finger lifts. The keyboard now stops that delay too, not only the delay at the start of a touch, and asks iOS to let keys win over edge swipes.

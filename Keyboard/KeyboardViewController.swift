@@ -149,6 +149,7 @@ final class KeyboardViewController: UIInputViewController {
     override func textWillChange(_ textInput: UITextInput?) {}
 
     override func textDidChange(_ textInput: UITextInput?) {
+        SpeedMeter.shared.appReplied()
         composer.documentChanged()
         updateAppearance()
         updateAutoShift()
@@ -196,11 +197,13 @@ final class KeyboardViewController: UIInputViewController {
     }
 
     private func updateAppearance() {
+        let style: UIUserInterfaceStyle
         switch textDocumentProxy.keyboardAppearance ?? .default {
-        case .dark: view.overrideUserInterfaceStyle = .dark
-        case .light: view.overrideUserInterfaceStyle = .light
-        default: view.overrideUserInterfaceStyle = .unspecified
+        case .dark: style = .dark
+        case .light: style = .light
+        default: style = .unspecified
         }
+        if view.overrideUserInterfaceStyle != style { view.overrideUserInterfaceStyle = style }
     }
 
     private func currentRows() -> [[KeySpec]] {
@@ -268,10 +271,17 @@ final class KeyboardViewController: UIInputViewController {
             self.refreshCandidates()
         }
         candidateWork = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.07, execute: work)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.04, execute: work)
     }
 
+    /// English suggestions are worked out here, away from the thread that handles taps.
+    private let suggestQueue = DispatchQueue(label: "IndicKeyboard.suggestions", qos: .userInitiated)
+    private var suggestGeneration = 0
+
     private func refreshCandidates() {
+        let start = SpeedMeter.now()
+        defer { SpeedMeter.shared.suggestionsFilled(since: start) }
+        suggestGeneration += 1      // any answer still on its way is now out of date
         if layout.kind == .transliteration, composer.isComposing, let e = engine {
             let keys = composer.keys
             let current = e.output(for: keys)
@@ -289,25 +299,33 @@ final class KeyboardViewController: UIInputViewController {
         if layout.kind == .english, page == .letters, settings.predictive {
             let word = currentEnglishWord()
             if !word.isEmpty {
-                let correction = settings.autocorrect ? english.autocorrection(for: word) : nil
-                let others = english.suggestions(for: word, limit: 3).filter { $0 != correction }
-                var values: [(value: String, literal: Bool)] = [(word, true)]
-                var items = [BarItem(title: "“\(word)”", dim: true)]
-                if let c = correction {
-                    values.append((c, false))
-                    items.append(BarItem(title: c, bold: true))
-                    if let o = others.first {
-                        values.append((o, false))
-                        items.append(BarItem(title: o))
-                    }
-                } else {
-                    for o in others.prefix(2) {
-                        values.append((o, false))
-                        items.append(BarItem(title: o))
+                let gen = suggestGeneration
+                let autocorrect = settings.autocorrect
+                let english = self.english
+                suggestQueue.async { [weak self] in
+                    let correction = autocorrect ? english.autocorrection(for: word) : nil
+                    let others = english.suggestions(for: word, limit: 3).filter { $0 != correction }
+                    DispatchQueue.main.async {
+                        guard let self, gen == self.suggestGeneration, self.currentEnglishWord() == word else { return }
+                        var values: [(value: String, literal: Bool)] = [(word, true)]
+                        var items = [BarItem(title: "“\(word)”", dim: true)]
+                        if let c = correction {
+                            values.append((c, false))
+                            items.append(BarItem(title: c, bold: true))
+                            if let o = others.first {
+                                values.append((o, false))
+                                items.append(BarItem(title: o))
+                            }
+                        } else {
+                            for o in others.prefix(2) {
+                                values.append((o, false))
+                                items.append(BarItem(title: o))
+                            }
+                        }
+                        self.englishBar = values
+                        self.candidateBar.show(items)
                     }
                 }
-                englishBar = values
-                candidateBar.show(items)
                 return
             }
         }
@@ -606,6 +624,8 @@ extension KeyboardViewController: KeysViewDelegate {
     }
 
     func keysView(_ v: KeysView, didTap key: KeySpec) {
+        let start = SpeedMeter.now()
+        defer { SpeedMeter.shared.keyHandled(since: start) }
         switch key.action {
         case .character(let s): handleCharacter(s)
         case .space: handleSpace()
