@@ -2,6 +2,11 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.4.1] — 2026-10-26
+### Fixed
+- Quick repeated taps ("aa", "ll") and keys at the screen edges (a, q, z, the bottom row) responded late. iOS held back the *end* of touches near the edges while it checked for its own swipe gestures, and keys type when the finger lifts. The keyboard now stops that delay too, not only the delay at the start of a touch, and asks iOS to let keys win over edge swipes.
+- The suggestion bar now updates after a short pause in typing (70 ms) instead of after every key, so the spell checker no longer runs between two quick taps.
+
 ## [0.4.0] — 2026-10-26
 ### Added
 - **English (India), Manglish-friendly.** The English keyboard now uses Apple's Indian English dictionary when the phone has it, and it no longer autocorrects Malayalam typed in English letters. It knows about 660 common Manglish words and their spellings (enthu, alle, machane, evide, kollaam, pwoli…), including stretched ones like enthaaa. It also skips words with spellings English rarely uses (aa, ii, uu, zh, and endings like -nnu, -ille, -aano, -yude).

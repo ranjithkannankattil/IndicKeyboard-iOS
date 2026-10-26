@@ -117,14 +117,23 @@ final class KeyboardViewController: UIInputViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         installHeightConstraint()
-        // iOS delays touches near the screen edges while it checks for system gestures,
-        // which makes the bottom row and edge keys feel slow. Keys must respond at once.
+        stopDelayingTouches()
+        setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+    }
+
+    /// Ask iOS to let our keys win over its edge swipes (a, q, z and the bottom row sit on edges).
+    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { .all }
+
+    /// iOS delays touches near the screen edges while it checks for system gestures.
+    /// Keys type on finger-up, so both the start and the end of a touch must arrive at once,
+    /// or a quick "aa" feels sticky. iOS can add recognizers later, so this runs again on touch.
+    private func stopDelayingTouches() {
         var v: UIView? = view
         while let cur = v {
-            cur.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false }
+            cur.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false; $0.delaysTouchesEnded = false }
             v = cur.superview
         }
-        view.window?.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false }
+        view.window?.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false; $0.delaysTouchesEnded = false }
     }
 
     private var isLandscape: Bool {
@@ -243,18 +252,23 @@ final class KeyboardViewController: UIInputViewController {
 
     // MARK: Candidates
 
-    private var candidatesPending = false
+
 
     /// Suggestions are worked out just after the keystroke has gone to the app,
     /// so typing never waits for the spell checker or the transliteration engine.
+    /// The suggestion bar waits for a short pause in typing, so the spell checker never
+    /// runs between two quick taps. A new key press pushes it back again.
+    private var candidateWork: DispatchWorkItem?
+
     private func updateCandidates() {
-        guard !candidatesPending else { return }
-        candidatesPending = true
-        DispatchQueue.main.async { [weak self] in
+        candidateWork?.cancel()
+        let work = DispatchWorkItem { [weak self] in
             guard let self else { return }
-            self.candidatesPending = false
+            self.candidateWork = nil
             self.refreshCandidates()
         }
+        candidateWork = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.07, execute: work)
     }
 
     private func refreshCandidates() {
@@ -578,6 +592,8 @@ final class KeyboardViewController: UIInputViewController {
 
 extension KeyboardViewController: KeysViewDelegate {
     func keysView(_ v: KeysView, didPressDown key: KeySpec) {
+        if candidateWork != nil { updateCandidates() }   // still typing: wait a little longer
+        stopDelayingTouches()   // a few views; cheap
         click()
         if key.action == .backspace {
             handleBackspace()
