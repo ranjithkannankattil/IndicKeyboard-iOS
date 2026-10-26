@@ -118,22 +118,18 @@ final class KeyboardViewController: UIInputViewController {
         super.viewDidAppear(animated)
         installHeightConstraint()
         stopDelayingTouches()
-        setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
 
-    /// Ask iOS to let our keys win over its edge swipes (a, q, z and the bottom row sit on edges).
-    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { .all }
-
-    /// iOS delays touches near the screen edges while it checks for system gestures.
-    /// Keys type on finger-up, so both the start and the end of a touch must arrive at once,
-    /// or a quick "aa" feels sticky. iOS can add recognizers later, so this runs again on touch.
+    /// iOS delays the start of touches near the screen edges while it checks for system gestures.
+    /// Only the start delay is switched off, and only here: changing these settings while a
+    /// finger is down (as 0.4.1 did) can lose the finger-up, and with it the letter.
     private func stopDelayingTouches() {
         var v: UIView? = view
         while let cur = v {
-            cur.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false; $0.delaysTouchesEnded = false }
+            cur.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false }
             v = cur.superview
         }
-        view.window?.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false; $0.delaysTouchesEnded = false }
+        view.window?.gestureRecognizers?.forEach { $0.delaysTouchesBegan = false }
     }
 
     private var isLandscape: Bool {
@@ -224,6 +220,7 @@ final class KeyboardViewController: UIInputViewController {
                                            showGlobe: needsInputModeSwitchKey,
                                            layoutShort: enabled.count > 1 ? nextLayoutLabel() : nil,
                                            spaceLabel: layout.kind == .english ? "space" : layout.name,
+                                           afterSpace: layout.kind == .transliteration && page == .letters ? KeyboardRows.tildeKey : nil,
                                            returnLabel: look.label,
                                            returnIsAccent: look.accent))
         keysView.rows = rows
@@ -611,7 +608,6 @@ final class KeyboardViewController: UIInputViewController {
 extension KeyboardViewController: KeysViewDelegate {
     func keysView(_ v: KeysView, didPressDown key: KeySpec) {
         if candidateWork != nil { updateCandidates() }   // still typing: wait a little longer
-        stopDelayingTouches()   // a few views; cheap
         click()
         if key.action == .backspace {
             handleBackspace()

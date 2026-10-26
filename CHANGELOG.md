@@ -2,6 +2,13 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.4.3] — 2026-10-26
+### Fixed
+- Missing and late keystrokes (a, backspace, the top row), which 0.4.1 made worse. That version changed iOS's touch-delay settings on every key press, while a finger was down, which can lose the finger-up and with it the letter. Reverted: only the start-of-touch delay is switched off, once, when the keyboard appears, as before 0.4.1. The edge-swipe preference was removed too.
+- If iOS cancels a quick tap on a letter (because it thinks a system swipe is starting), the letter is still typed.
+### Changed
+- Swanalekha's **~** key moved from the third row to the bottom row, right of the space bar (hold it for _ and ^). The third row now matches English, and backspace is wider (1.45 keys, was squeezed by ~).
+
 ## [0.4.2] — 2026-10-26
 ### Added
 - **Speed check** in the keyboard's ⚙ panel: average and worst times for the keyboard's own work per key, the app's reply, and the suggestion bar. Only timings are kept, never text.

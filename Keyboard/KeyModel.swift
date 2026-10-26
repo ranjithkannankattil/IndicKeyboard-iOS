@@ -45,9 +45,6 @@ enum KeyboardRows {
                 return KeySpec(label: s, action: .character(s))
             }
         }
-        if transliteration {
-            rows[2].append(KeySpec(label: "~", hint: "_^", action: .character("~"), more: ["_", "^"]))
-        }
         rows[2].insert(shiftKey(shift), at: 0)
         rows[2].append(backspaceKey)
         return rows
@@ -101,7 +98,8 @@ enum KeyboardRows {
     }
 
     static func bottomRow(page: KeyPage, showGlobe: Bool, layoutShort: String?,
-                          spaceLabel: String, returnLabel: String, returnIsAccent: Bool) -> [KeySpec] {
+                          spaceLabel: String, afterSpace: KeySpec? = nil,
+                          returnLabel: String, returnIsAccent: Bool) -> [KeySpec] {
         var row: [KeySpec] = []
         row.append(KeySpec(label: page == .letters ? "123" : "ABC",
                            action: .page(page == .letters ? .numbers : .letters),
@@ -114,6 +112,7 @@ enum KeyboardRows {
             row.append(KeySpec(label: s, action: .nextLayout, width: 1.3, isFunction: true))
         }
         row.append(KeySpec(label: spaceLabel, action: .space, flexible: true))
+        if let k = afterSpace { row.append(k) }
         row.append(KeySpec(label: returnLabel, action: .returnKey, width: 2.7, isFunction: !returnIsAccent,
                            isAccent: returnIsAccent))
         return row
@@ -129,5 +128,8 @@ enum KeyboardRows {
         return KeySpec(label: "", action: .shift, width: 1.35, isFunction: true, symbol: symbol)
     }
 
-    static let backspaceKey = KeySpec(label: "", action: .backspace, width: 1.35, isFunction: true, symbol: "delete.left")
+    static let backspaceKey = KeySpec(label: "", action: .backspace, width: 1.45, isFunction: true, symbol: "delete.left")
+
+    /// Swanalekha's chillu key (njaan~ → ഞാൻ), next to space; hold for _ and ^.
+    static let tildeKey = KeySpec(label: "~", hint: "_^", action: .character("~"), more: ["_", "^"])
 }

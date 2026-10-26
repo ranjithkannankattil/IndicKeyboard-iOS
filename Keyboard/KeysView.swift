@@ -185,6 +185,7 @@ final class KeysView: UIView {
         var row: Int; var col: Int
         var longPressTimer: Timer?
         var longPressed = false
+        let began = CACurrentMediaTime()
         var altIndex: Int?
         init(row: Int, col: Int) { self.row = row; self.col = col }
     }
@@ -398,7 +399,15 @@ final class KeysView: UIView {
     }
 
     override func touchesCancelled(_ set: Set<UITouch>, with event: UIEvent?) {
-        for t in set { if let tr = touches[t] { finish(t, tr, fire: false) } }
+        // iOS cancels a touch when it thinks a system swipe is starting. A quick tap on a
+        // letter is still a letter, so type it rather than lose the keystroke.
+        for t in set {
+            guard let tr = touches[t] else { continue }
+            var isLetter = false
+            if let s = specFor(tr), case .character = s.action { isLetter = true }
+            let quick = !tr.longPressed && CACurrentMediaTime() - tr.began < 0.3
+            finish(t, tr, fire: isLetter && quick)
+        }
     }
 
     private func specFor(_ tr: Tracked) -> KeySpec? {
