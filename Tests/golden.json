@@ -1,0 +1,504 @@
+{
+ "swanalekha": [
+  {
+   "keys": "malayaaLam",
+   "output": "മലയാളമ്",
+   "variants": [
+    "മലയാളമ്",
+    "മലയാളം",
+    "മലയാളഎം"
+   ]
+  },
+  {
+   "keys": "malayaaLam ",
+   "output": "മലയാളം ",
+   "variants": [
+    "മലയാളം "
+   ]
+  },
+  {
+   "keys": "kEraLam",
+   "output": "കേരളമ്",
+   "variants": [
+    "കേരളമ്",
+    "കേരളം",
+    "കേരളഎം"
+   ]
+  },
+  {
+   "keys": "swanalekha",
+   "output": "സ്വനലെഖ",
+   "variants": [
+    "സ്വനലെഖ",
+    "സ്വനലെക്ക",
+    "സ്വനലെഘ"
+   ]
+  },
+  {
+   "keys": "nanni",
+   "output": "നന്നി",
+   "variants": [
+    "നന്നി",
+    "നന്ണി",
+    "നന്നൈ"
+   ]
+  },
+  {
+   "keys": "amma",
+   "output": "അമ്മ",
+   "variants": [
+    "അമ്മ",
+    "അമ്മ്മ"
+   ]
+  },
+  {
+   "keys": "kaRuppu",
+   "output": "കറുപ്പു",
+   "variants": [
+    "കറുപ്പു"
+   ]
+  },
+  {
+   "keys": "enthaa",
+   "output": "എന്താ",
+   "variants": [
+    "എന്താ"
+   ]
+  },
+  {
+   "keys": "sukhamaaNO",
+   "output": "സുഖമാണോ",
+   "variants": [
+    "സുഖമാണോ",
+    "സുഖമാനോ"
+   ]
+  },
+  {
+   "keys": "ente",
+   "output": "എന്റെ",
+   "variants": [
+    "എന്റെ"
+   ]
+  },
+  {
+   "keys": "naaTT",
+   "output": "നാറ്റ്",
+   "variants": [
+    "നാറ്റ്",
+    "നാറ്റു്"
+   ]
+  },
+  {
+   "keys": "avan~",
+   "output": "അവൻ",
+   "variants": [
+    "അവൻ"
+   ]
+  },
+  {
+   "keys": "pakshi",
+   "output": "പക്ഷി",
+   "variants": [
+    "പക്ഷി"
+   ]
+  },
+  {
+   "keys": "aaNu",
+   "output": "ആണു",
+   "variants": [
+    "ആണു"
+   ]
+  },
+  {
+   "keys": "kshamikkuka",
+   "output": "ക്ഷമിക്കുക",
+   "variants": [
+    "ക്ഷമിക്കുക",
+    "ക്ഷമിക്കുഗ",
+    "ക്ഷമിക്കുഖ",
+    "ക്ഷമിക്കുഘ"
+   ]
+  },
+  {
+   "keys": "njaan",
+   "output": "ഞാന്",
+   "variants": [
+    "ഞാന്",
+    "ഞാൻ",
+    "ഞാനു്",
+    "ഞാൺ",
+    "ഞാണ്",
+    "ഞാന്ന്",
+    "ഞാഎൻ"
+   ]
+  },
+  {
+   "keys": "ngaL",
+   "output": "ങ്ങള്",
+   "variants": [
+    "ങ്ങള്",
+    "ങ്ങൾ",
+    "ങ്ങളു്",
+    "ങ്ങഎൽ",
+    "ങ്ങള്ള്"
+   ]
+  },
+  {
+   "keys": "mm",
+   "output": "മ്മ്",
+   "variants": [
+    "മ്മ്",
+    "മ്ം",
+    "മ്എം"
+   ]
+  },
+  {
+   "keys": "ka2",
+   "output": "ഗ",
+   "variants": [
+    "ക",
+    "ഗ",
+    "ഖ",
+    "ഘ"
+   ]
+  },
+  {
+   "keys": "ka3",
+   "output": "ഖ",
+   "variants": [
+    "ക",
+    "ഗ",
+    "ഖ",
+    "ഘ"
+   ]
+  },
+  {
+   "keys": "thaangal",
+   "output": "താങ്ങല്",
+   "variants": [
+    "താങ്ങല്",
+    "താങ്ങൽ",
+    "താങ്ങൾ",
+    "താങ്ങലു്",
+    "താങ്ങഎൽ"
+   ]
+  },
+  {
+   "keys": "dhanyavaadam",
+   "output": "ധന്യവാദമ്",
+   "variants": [
+    "ധന്യവാദമ്",
+    "ധന്യവാദം",
+    "ധന്യവാദഎം"
+   ]
+  },
+  {
+   "keys": "namaskaaram ",
+   "output": "നമസ്കാരം ",
+   "variants": [
+    "നമസ്കാരം "
+   ]
+  },
+  {
+   "keys": "kRshNan~",
+   "output": "കൃഷ്ണൻ",
+   "variants": [
+    "കൃഷ്ണൻ"
+   ]
+  },
+  {
+   "keys": "sreeraam",
+   "output": "സ്രീരാമ്",
+   "variants": [
+    "സ്രീരാമ്",
+    "സ്രീരാം",
+    "സ്രീരാഎം"
+   ]
+  },
+  {
+   "keys": "vidyaalayam",
+   "output": "വിദ്യാലയമ്",
+   "variants": [
+    "വിദ്യാലയമ്",
+    "വിദ്യാലയം",
+    "വിദ്യാലയഎം"
+   ]
+  },
+  {
+   "keys": "prakR^thi",
+   "output": "പ്രകൃ്തി",
+   "variants": [
+    "പ്രകൃ്തി",
+    "പ്രകൃ്ത്തി",
+    "പ്രകൃ്ഥി",
+    "പ്രകൃ്ധി",
+    "പ്രകൃ്ത്ഥി",
+    "പ്രകൃ്ദ്ധി",
+    "പ്രകൃ്തൈ"
+   ]
+  },
+  {
+   "keys": "L~",
+   "output": "ൾ",
+   "variants": [
+    "ൾ"
+   ]
+  },
+  {
+   "keys": "r~",
+   "output": "ർ",
+   "variants": [
+    "ർ"
+   ]
+  },
+  {
+   "keys": "yaathra",
+   "output": "യാത്ര",
+   "variants": [
+    "യാത്ര",
+    "യാത്റ"
+   ]
+  },
+  {
+   "keys": "chhaaya",
+   "output": "ഛായ",
+   "variants": [
+    "ഛായ"
+   ]
+  },
+  {
+   "keys": "zh",
+   "output": "ഴ്",
+   "variants": [
+    "ഴ്",
+    "ഴു്"
+   ]
+  },
+  {
+   "keys": "vazhi",
+   "output": "വഴി",
+   "variants": [
+    "വഴി"
+   ]
+  },
+  {
+   "keys": "thiruvananthapuram",
+   "output": "തിരുവനന്തപുരമ്",
+   "variants": [
+    "തിരുവനന്തപുരമ്",
+    "തിരുവനന്തപുരം",
+    "തിരുവനന്തപുരഎം"
+   ]
+  },
+  {
+   "keys": "kozhikkOd",
+   "output": "കൊഴിക്കോദ്",
+   "variants": [
+    "കൊഴിക്കോദ്",
+    "കൊഴിക്കോദു്",
+    "കൊഴിക്കോട്",
+    "കൊഴിക്കോടു്",
+    "കൊഴിക്കോഡി",
+    "കൊഴിക്കോദ്ദ്"
+   ]
+  },
+  {
+   "keys": "aRivu",
+   "output": "അറിവു",
+   "variants": [
+    "അറിവു"
+   ]
+  },
+  {
+   "keys": "~",
+   "output": "‌",
+   "variants": [
+    "‌"
+   ]
+  },
+  {
+   "keys": "a_i",
+   "output": "അ‌ഇ",
+   "variants": [
+    "അ‌ഇ",
+    "അ‌ഈ",
+    "അ‌ഐ"
+   ]
+  },
+  {
+   "keys": "123",
+   "output": "123",
+   "variants": []
+  },
+  {
+   "keys": "hello",
+   "output": "ഹെല്ലൊ",
+   "variants": [
+    "ഹെല്ലൊ",
+    "ഹെല്ലോ"
+   ]
+  }
+ ],
+ "ml-transliteration": [
+  {
+   "keys": "malayaaLam",
+   "output": "മലയാളം"
+  },
+  {
+   "keys": "malayaaLam ",
+   "output": "മലയാളം "
+  },
+  {
+   "keys": "kEraLam",
+   "output": "കേരളം"
+  },
+  {
+   "keys": "swanalekha",
+   "output": "സ്വനലെഖ"
+  },
+  {
+   "keys": "nanni",
+   "output": "നന്നി"
+  },
+  {
+   "keys": "amma",
+   "output": "അമ്മ"
+  },
+  {
+   "keys": "kaRuppu",
+   "output": "കറുപ്പു"
+  },
+  {
+   "keys": "enthaa",
+   "output": "എന്താ"
+  },
+  {
+   "keys": "sukhamaaNO",
+   "output": "സുഖമാണോ"
+  },
+  {
+   "keys": "ente",
+   "output": "എന്റെ"
+  },
+  {
+   "keys": "naaTT",
+   "output": "നാട്ട്"
+  },
+  {
+   "keys": "avan~",
+   "output": "അവന്"
+  },
+  {
+   "keys": "pakshi",
+   "output": "പക്ഷി"
+  },
+  {
+   "keys": "aaNu",
+   "output": "ആണു"
+  },
+  {
+   "keys": "kshamikkuka",
+   "output": "ക്ഷമിക്കുക"
+  },
+  {
+   "keys": "njaan",
+   "output": "ഞാൻ"
+  },
+  {
+   "keys": "ngaL",
+   "output": "ങൾ"
+  },
+  {
+   "keys": "mm",
+   "output": "മ്ം"
+  },
+  {
+   "keys": "ka2",
+   "output": "ക2"
+  },
+  {
+   "keys": "ka3",
+   "output": "ക3"
+  },
+  {
+   "keys": "thaangal",
+   "output": "താങൽ"
+  },
+  {
+   "keys": "dhanyavaadam",
+   "output": "ധന്യവാദം"
+  },
+  {
+   "keys": "namaskaaram ",
+   "output": "നമസ്കാരം "
+  },
+  {
+   "keys": "kRshNan~",
+   "output": "കൃഷ്ണന്"
+  },
+  {
+   "keys": "sreeraam",
+   "output": "സ്രീരാം"
+  },
+  {
+   "keys": "vidyaalayam",
+   "output": "വിദ്യാലയം"
+  },
+  {
+   "keys": "prakR^thi",
+   "output": "പ്രകൃ^തി"
+  },
+  {
+   "keys": "L~",
+   "output": "ള്"
+  },
+  {
+   "keys": "r~",
+   "output": "ര്"
+  },
+  {
+   "keys": "yaathra",
+   "output": "യാത്ര"
+  },
+  {
+   "keys": "chhaaya",
+   "output": "ഛായ"
+  },
+  {
+   "keys": "zh",
+   "output": "ഴ്"
+  },
+  {
+   "keys": "vazhi",
+   "output": "വഴി"
+  },
+  {
+   "keys": "thiruvananthapuram",
+   "output": "തിരുവനന്തപുരം"
+  },
+  {
+   "keys": "kozhikkOd",
+   "output": "കൊഴിക്കോദ്"
+  },
+  {
+   "keys": "aRivu",
+   "output": "അറിവു"
+  },
+  {
+   "keys": "~",
+   "output": "്"
+  },
+  {
+   "keys": "a_i",
+   "output": "അഇ"
+  },
+  {
+   "keys": "123",
+   "output": "123"
+  },
+  {
+   "keys": "hello",
+   "output": "ഹെല്ലൊ"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.moved-aside
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc

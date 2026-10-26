@@ -1,0 +1,14 @@
+{
+ "comment": "Layouts offered by the keyboard, in display order. To add a layout: drop its JSON into Schemes/ (transliteration) or Layouts/ (direct keys) and add an entry here. kind: english | transliteration | direct.",
+ "defaultEnabled": ["ml-swanalekha", "en"],
+ "layouts": [
+  {"id": "ml-swanalekha", "name": "സ്വനലേഖ", "subtitle": "Swanalekha · phonetic", "short": "സ്വ", "kind": "transliteration", "file": "ml-swanalekha"},
+  {"id": "en", "name": "English", "subtitle": "QWERTY", "short": "EN", "kind": "english"},
+  {"id": "ml-transliteration", "name": "ലിപ്യന്തരണം", "subtitle": "Mozhi-style transliteration", "short": "ലി", "kind": "transliteration", "file": "ml-transliteration"},
+  {"id": "ml-lalitha", "name": "മലയാളം", "subtitle": "Lalitha · direct", "short": "മ", "kind": "direct", "file": "ml-lalitha"},
+  {"id": "ml-compact", "name": "മലയാളം Compact", "subtitle": "Compact · direct", "short": "മ", "kind": "direct", "file": "ml-compact"},
+  {"id": "ml-mobile-inscript", "name": "മൊബൈൽ ഇൻസ്ക്രിപ്റ്റ്", "subtitle": "Mobile InScript · direct", "short": "ഇ", "kind": "direct", "file": "ml-mobile-inscript"},
+  {"id": "ml-inscript", "name": "ഇൻസ്ക്രിപ്റ്റ്", "subtitle": "InScript · direct", "short": "ഇ", "kind": "direct", "file": "ml-inscript"},
+  {"id": "ml-poorna-inscript", "name": "പൂർണ്ണ ഇൻസ്ക്രിപ്റ്റ്", "subtitle": "Poorna InScript · direct", "short": "ഇ", "kind": "direct", "file": "ml-poorna-inscript"}
+ ]
+}

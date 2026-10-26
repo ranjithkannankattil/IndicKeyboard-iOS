@@ -1,0 +1,568 @@
+{
+ "engine": "direct",
+ "id": "ml-poorna-inscript",
+ "name": "പൂർണ്ണ ഇൻസ്ക്രിപ്റ്റ്",
+ "description": "Malayalam Poorna InScript",
+ "author": "Jishnu Mohan, SMC, ICFOSS (Indic Keyboard)",
+ "license": "Apache-2.0",
+ "hasShift": true,
+ "rowFlags": [
+  {
+   "shift": false,
+   "delete": false
+  },
+  {
+   "shift": false,
+   "delete": false
+  },
+  {
+   "shift": false,
+   "delete": true
+  },
+  {
+   "shift": true,
+   "delete": false
+  }
+ ],
+ "rows": [
+  [
+   {
+    "label": "ൊ",
+    "output": "ൊ",
+    "more": [
+     "`"
+    ]
+   },
+   {
+    "label": "1",
+    "output": "1",
+    "more": [
+     "൰"
+    ]
+   },
+   {
+    "label": "2",
+    "output": "2",
+    "more": [
+     "൱"
+    ]
+   },
+   {
+    "label": "3",
+    "output": "3",
+    "more": [
+     "൲"
+    ]
+   },
+   {
+    "label": "4",
+    "output": "4"
+   },
+   {
+    "label": "5",
+    "output": "5",
+    "more": [
+     "൳"
+    ]
+   },
+   {
+    "label": "6",
+    "output": "6",
+    "more": [
+     "൴"
+    ]
+   },
+   {
+    "label": "7",
+    "output": "7",
+    "more": [
+     "൵"
+    ]
+   },
+   {
+    "label": "8",
+    "output": "8",
+    "more": [
+     "*"
+    ]
+   },
+   {
+    "label": "9",
+    "output": "9"
+   },
+   {
+    "label": "0",
+    "output": "0"
+   },
+   {
+    "label": "-",
+    "output": "-",
+    "more": [
+     "–",
+     "—",
+     "·"
+    ]
+   },
+   {
+    "label": "ൃ",
+    "output": "ൃ",
+    "more": [
+     "=",
+     "ൄ",
+     "ൠ"
+    ]
+   }
+  ],
+  [
+   {
+    "label": "ൗ",
+    "output": "ൗ",
+    "more": [
+     "ൌ",
+     "൞"
+    ]
+   },
+   {
+    "label": "ൈ",
+    "output": "ൈ",
+    "more": [
+     "ൈ",
+     "൷"
+    ]
+   },
+   {
+    "label": "ാ",
+    "output": "ാ",
+    "more": [
+     "ൟ",
+     "൜"
+    ]
+   },
+   {
+    "label": "ീ",
+    "output": "ീ",
+    "more": [
+     "ൣ",
+     "ൡ"
+    ]
+   },
+   {
+    "label": "ൂ",
+    "output": "ൂ",
+    "more": [
+     "൶"
+    ]
+   },
+   {
+    "label": "ബ",
+    "output": "ബ",
+    "more": [
+     "൛"
+    ]
+   },
+   {
+    "label": "ഹ",
+    "output": "ഹ",
+    "more": [
+     "൙"
+    ]
+   },
+   {
+    "label": "ഗ",
+    "output": "ഗ",
+    "more": [
+     "൘"
+    ]
+   },
+   {
+    "label": "ദ",
+    "output": "ദ",
+    "more": [
+     "൸"
+    ]
+   },
+   {
+    "label": "ജ",
+    "output": "ജ",
+    "more": [
+     "൝"
+    ]
+   },
+   {
+    "label": "ഡ",
+    "output": "ഡ",
+    "more": [
+     "[",
+     "൚"
+    ]
+   }
+  ],
+  [
+   {
+    "label": "ോ",
+    "output": "ോ"
+   },
+   {
+    "label": "േ",
+    "output": "േ",
+    "more": [
+     "഻",
+     "഼"
+    ]
+   },
+   {
+    "label": "്",
+    "output": "്",
+    "more": [
+     "ഽ",
+     "ഁ"
+    ]
+   },
+   {
+    "label": "ി",
+    "output": "ി",
+    "more": [
+     "ൢ",
+     "ഌ"
+    ]
+   },
+   {
+    "label": "ു",
+    "output": "ു"
+   },
+   {
+    "label": "പ",
+    "output": "പ",
+    "more": [
+     "൏"
+    ]
+   },
+   {
+    "label": "ര",
+    "output": "ര",
+    "more": [
+     "ൎ",
+     "ഺ"
+    ]
+   },
+   {
+    "label": "ക",
+    "output": "ക",
+    "more": [
+     "ൿ"
+    ]
+   },
+   {
+    "label": "ത",
+    "output": "ത"
+   },
+   {
+    "label": "ച",
+    "output": "ച",
+    "more": [
+     ";"
+    ]
+   },
+   {
+    "label": "ട",
+    "output": "ട",
+    "more": [
+     "'"
+    ]
+   }
+  ],
+  [
+   {
+    "label": "െ",
+    "output": "െ"
+   },
+   {
+    "label": "ം",
+    "output": "ം",
+    "more": [
+     "ഀ",
+     "ഄ"
+    ]
+   },
+   {
+    "label": "മ",
+    "output": "മ",
+    "more": [
+     "ൔ"
+    ]
+   },
+   {
+    "label": "ന",
+    "output": "ന",
+    "more": [
+     "൹",
+     "ഩ"
+    ]
+   },
+   {
+    "label": "വ",
+    "output": "വ",
+    "more": [
+     "ൖ"
+    ]
+   },
+   {
+    "label": "ല",
+    "output": "ല"
+   },
+   {
+    "label": "സ",
+    "output": "സ"
+   },
+   {
+    "label": ",",
+    "output": ",",
+    "more": [
+     "<"
+    ]
+   },
+   {
+    "label": ".",
+    "output": ".",
+    "more": [
+     ">"
+    ]
+   },
+   {
+    "label": "യ",
+    "output": "യ",
+    "more": [
+     "/",
+     "ൕ"
+    ]
+   }
+  ]
+ ],
+ "shiftedRows": [
+  [
+   {
+    "label": "ഒ",
+    "output": "ഒ",
+    "more": [
+     "~"
+    ]
+   },
+   {
+    "label": "@",
+    "output": "@"
+   },
+   {
+    "label": "#",
+    "output": "#"
+   },
+   {
+    "label": "₹",
+    "output": "₹"
+   },
+   {
+    "label": "%",
+    "output": "%"
+   },
+   {
+    "label": "^",
+    "output": "^"
+   },
+   {
+    "label": "&",
+    "output": "&"
+   },
+   {
+    "label": "ൾ",
+    "output": "ൾ"
+   },
+   {
+    "label": "(",
+    "output": "("
+   },
+   {
+    "label": ")",
+    "output": ")"
+   },
+   {
+    "label": "ഃ",
+    "output": "ഃ",
+    "more": [
+     "_"
+    ]
+   },
+   {
+    "label": "ഋ",
+    "output": "ഋ",
+    "more": [
+     "+",
+     "±",
+     "×",
+     "÷",
+     "√"
+    ]
+   }
+  ],
+  [
+   {
+    "label": "ഔ",
+    "output": "ഔ"
+   },
+   {
+    "label": "ഐ",
+    "output": "ഐ"
+   },
+   {
+    "label": "ആ",
+    "output": "ആ"
+   },
+   {
+    "label": "ഈ",
+    "output": "ഈ"
+   },
+   {
+    "label": "ഊ",
+    "output": "ഊ"
+   },
+   {
+    "label": "ഭ",
+    "output": "ഭ"
+   },
+   {
+    "label": "ങ",
+    "output": "ങ"
+   },
+   {
+    "label": "ഘ",
+    "output": "ഘ"
+   },
+   {
+    "label": "ധ",
+    "output": "ധ"
+   },
+   {
+    "label": "ഝ",
+    "output": "ഝ"
+   },
+   {
+    "label": "ഢ",
+    "output": "ഢ",
+    "more": [
+     "{"
+    ]
+   },
+   {
+    "label": "ഞ",
+    "output": "ഞ",
+    "more": [
+     "}"
+    ]
+   },
+   {
+    "label": "ർ",
+    "output": "ർ"
+   }
+  ],
+  [
+   {
+    "label": "ഓ",
+    "output": "ഓ"
+   },
+   {
+    "label": "ഏ",
+    "output": "ഏ"
+   },
+   {
+    "label": "അ",
+    "output": "അ"
+   },
+   {
+    "label": "ഇ",
+    "output": "ഇ"
+   },
+   {
+    "label": "ഉ",
+    "output": "ഉ"
+   },
+   {
+    "label": "ഫ",
+    "output": "ഫ"
+   },
+   {
+    "label": "റ",
+    "output": "റ"
+   },
+   {
+    "label": "ഖ",
+    "output": "ഖ"
+   },
+   {
+    "label": "ഥ",
+    "output": "ഥ"
+   },
+   {
+    "label": "ഛ",
+    "output": "ഛ",
+    "more": [
+     ":"
+    ]
+   },
+   {
+    "label": "ഠ",
+    "output": "ഠ",
+    "more": [
+     "\""
+    ]
+   }
+  ],
+  [
+   {
+    "label": "എ",
+    "output": "എ"
+   },
+   {
+    "label": "ൺ",
+    "output": "ൺ"
+   },
+   {
+    "label": "ണ",
+    "output": "ണ"
+   },
+   {
+    "label": "ൻ",
+    "output": "ൻ"
+   },
+   {
+    "label": "ഴ",
+    "output": "ഴ"
+   },
+   {
+    "label": "ള",
+    "output": "ള"
+   },
+   {
+    "label": "ശ",
+    "output": "ശ"
+   },
+   {
+    "label": "ഷ",
+    "output": "ഷ",
+    "more": [
+     "<"
+    ]
+   },
+   {
+    "label": "ൽ",
+    "output": "ൽ",
+    "more": [
+     "›",
+     "≥",
+     "»"
+    ]
+   },
+   {
+    "label": "?",
+    "output": "?"
+   }
+  ]
+ ]
+}
