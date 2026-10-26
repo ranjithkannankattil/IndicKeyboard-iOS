@@ -1,49 +1,69 @@
 # Indic Keyboard for iOS
 
-An iOS port of [Indic Keyboard](https://gitlab.com/indicproject/Indic-Keyboard) (SMC / Indic Project) for Malayalam: one app you install, then enable as a system keyboard, like on Android.
+A Malayalam keyboard for iPhone and iPad, ported from the open-source Android [Indic Keyboard](https://gitlab.com/indicproject/Indic-Keyboard) by the Indic Project / Swathanthra Malayalam Computing (SMC). It installs like any app and is then enabled as a system keyboard.
 
-**Layouts:** Swanalekha (default), English, Mozhi-style ലിപ്യന്തരണം, and the Android app's direct layouts: Lalitha, Compact, Mobile InScript, InScript and Poorna InScript.
+> ⚠️ **Status: alpha.** This app has just been built and **alpha testing is in progress**. Expect rough edges and changes. If something doesn't work, please open an [Issue](../../issues) describing what happened.
+
+**Current version: 0.3.0 (alpha)** — see [CHANGELOG.md](CHANGELOG.md) for every version and change.
+
+## Features
+
+- **Swanalekha** phonetic typing (default), using SMC's official rules, with the alternatives for the last letter in the bar above the keys (`ka` → ക ഗ ഖ ഘ) and a `~` key for chillu (`njaan~` → ഞാൻ).
+- **Mozhi-style ലിപ്യന്തരണം** transliteration.
+- **Direct Malayalam layouts** from the Android app: Lalitha, Compact, Mobile InScript, InScript, Poorna InScript (hold a key for its extra letters).
+- **English** QWERTY with **word suggestions** and **auto-correction** (Apple's on-device spell checker; backspace undoes a correction), sentence capitals and the double-space full stop.
+- **Emoji keyboard** with categories and Frequently Used.
+- Key sizes and spacing modelled on the iOS keyboard; light and dark mode.
+- No Full Access needed — nothing you type leaves the phone.
 
 ## Install on your iPhone
 
-1. Open `IndicKeyboard.xcodeproj` in Xcode.
-2. Click the **IndicKeyboard** project → for **both** the `IndicKeyboard` and `Keyboard` targets: *Signing & Capabilities* → *Team* → your Apple ID (add it under Xcode → Settings → Accounts).
-   - If Xcode says the bundle identifier is taken, change `com.ranjithkb` in both targets. The keyboard's ID must start with the app's ID.
-3. Connect your iPhone (turn on *Developer Mode*: Settings → Privacy & Security), choose it as the destination, and press ▶︎ with the **IndicKeyboard** scheme.
-4. On the phone, first time only: *Settings → General → VPN & Device Management* → trust your developer certificate.
-5. *Settings → General → Keyboard → Keyboards → Add New Keyboard… → Indic Keyboard*.
-6. In any app, hold 🌐 and pick Indic Keyboard.
+> **New to Xcode or iPhone development?** Follow the detailed step‑by‑step guide:
+> ### 👉 [docs/INSTALL.md — Installing Indic Keyboard, a beginner's guide](docs/INSTALL.md)
 
-With a free Apple ID the app stops launching after 7 days; press ▶︎ again to refresh it.
+The short version, if you've done this before:
+
+1. Open `IndicKeyboard.xcodeproj` in Xcode 16 or newer.
+2. For **both** the `IndicKeyboard` and `Keyboard` targets: *Signing & Capabilities* → *Team* → your Apple ID, and change `com.ranjithkb` in the bundle identifiers to your own (the keyboard's ID must be the app's ID + `.Keyboard`).
+3. Connect the iPhone (Developer Mode on: Settings → Privacy & Security), choose it as the destination, press ▶︎.
+4. First time only: *Settings → General → VPN & Device Management* → trust your certificate.
+5. *Settings → General → Keyboard → Keyboards → Add New Keyboard… → Indic Keyboard*, then hold 🌐 in any app.
+
+With a free Apple ID the app must be re-run from Xcode every 7 days.
 
 ## Using it
 
-- **Layout key** (next to 🌐): cycles your enabled layouts; its label shows where it goes next (`EN`, `സ്വ`).
-- **Hold the layout key or space bar, or tap ⚙**: choose and enable layouts, settings.
-- **Candidate bar** in Swanalekha: alternatives for the last letter (what Tab does on desktop), e.g. `njaan` → ഞാന് / ഞാൻ. Tap the bold word to accept, the grey Latin word to type it in English.
-- Space runs Swanalekha's space rules (`malayaaLam␣` → മലയാളം).
-- Direct layouts: hold a key for its extra letters, as on Android.
-- If an app loses or doubles letters, turn off *Underline word while typing* in ⚙.
+| Key / gesture | Does |
+|---|---|
+| Layout key (next to space) | Cycles enabled layouts; label shows the next one (`EN`, `സ്വ`) |
+| Hold layout key or space, or tap ⚙ | Choose layouts, settings |
+| 😊 | Emoji keyboard (ABC to return) |
+| Bar above keys | Swanalekha: tap an alternative to swap the last letter, the bold word to accept, the grey Latin word to type it as is. English: “typed” · **correction** · suggestion |
+| Backspace after an autocorrection | Restores what you typed |
+| Double-tap space | “. ” |
 
-## Checking the engines
+Settings (⚙): layouts on/off, *Underline word while typing*, *Auto-Correction*, *Predictive*, *"." Shortcut*, *Key clicks*.
 
-```
-swiftc -O Shared/Engine/*.swift tools/enginecheck/main.swift -o build/ec/enginecheck
-cp Shared/Resources/catalog.json Shared/Resources/*/*.json Tests/golden.json build/ec/ && build/ec/enginecheck
-```
-Compares the Swift engines with the Python reference (`tools/engine_prototype.py`) on 40 words. The same checks exist as XCTest (`Tests/`), but Xcode 27's runner can hang on host-less iOS test bundles, so the command above is the reliable route.
+## Project
 
-## Updating or adding layouts
+- [docs/INSTALL.md](docs/INSTALL.md) — beginner's install guide.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — how it fits together, typing pipeline, geometry, data sources.
+- [CHANGELOG.md](CHANGELOG.md) — version history.
+- `tools/build_data.sh` — regenerate all layout data from upstream.
+- `tools/make_icon.swift` — draws the app icon (`swift tools/make_icon.swift App/Assets.xcassets/AppIcon.appiconset/AppIcon.png`).
+- `tools/make_emoji.py` — regenerates the emoji data.
+- `tools/enginecheck` — quick check of the transliteration engines on the Mac.
+- `python3 tools/gen_xcodeproj.py` — regenerate the Xcode project (`BUNDLE_PREFIX`, `DEVELOPMENT_TEAM` env vars).
 
-- `tools/build_data.sh <folder with swanalekha/, Indic-Keyboard/, jquery.ime/ clones>` regenerates all data from upstream.
-- New jquery.ime scheme: `node tools/convert_jqueryime.js <rules.js> Shared/Resources/Schemes/<id>.json`, then add it to `Shared/Resources/catalog.json`.
-- New Android direct layout: add it to `LAYOUTS` in `tools/convert_android_layouts.py`.
-- `python3 tools/gen_xcodeproj.py` regenerates the Xcode project (`BUNDLE_PREFIX=…` and `DEVELOPMENT_TEAM=…` env vars supported).
+## Not yet
 
-## Not in this version
+Malayalam word prediction (the Android app's dictionaries / Varnam), gesture typing, voice input. iOS never shows third-party keyboards in password fields.
 
-Word suggestions/learning (Android's dictionaries and Varnam), gesture typing, emoji, voice. iOS doesn't allow third-party keyboards in password fields.
+## Credits and licences
 
-## Licences
+- Indic Keyboard and its Malayalam layouts — Indic Project, SMC, Jishnu Mohan, ICFOSS — Apache 2.0
+- Swanalekha — Santhosh Thottingal — MIT
+- `ml-transliteration` rules — Junaid P V, Wikimedia jquery.ime — GPLv3. **Remove `Shared/Resources/Schemes/ml-transliteration.json` and its catalog entry before publishing on the App Store.**
+- Emoji data — `unicode-emoji-json` (Unicode data) — MIT
 
-Indic Keyboard and its direct layouts: Apache 2.0. Swanalekha rules: MIT (Santhosh Thottingal). `ml-transliteration` rules: GPLv3 (Wikimedia jquery.ime). Fine for personal use; **remove `Schemes/ml-transliteration.json` and its catalog entry before an App Store release.** Texts in `LICENSES/`.
+Licence texts are in [LICENSES/](LICENSES).

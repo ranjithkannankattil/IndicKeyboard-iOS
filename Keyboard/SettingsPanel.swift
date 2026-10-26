@@ -63,6 +63,24 @@ final class SettingsPanel: UIView {
             self?.settings.underlineWhileComposing = on
             self?.onChange?()
         }, tapped: nil))
+        stack.addArrangedSubview(row(title: "Auto-Correction", subtitle: "English: fix misspelt words when you type space",
+                                     isOn: settings.autocorrect, isCurrent: false,
+                                     toggled: { [weak self] on in
+            self?.settings.autocorrect = on
+            self?.onChange?()
+        }, tapped: nil))
+        stack.addArrangedSubview(row(title: "Predictive", subtitle: "English: word suggestions above the keys",
+                                     isOn: settings.predictive, isCurrent: false,
+                                     toggled: { [weak self] on in
+            self?.settings.predictive = on
+            self?.onChange?()
+        }, tapped: nil))
+        stack.addArrangedSubview(row(title: "\".\" Shortcut", subtitle: "Double-tap space to type a full stop",
+                                     isOn: settings.doubleSpacePeriod, isCurrent: false,
+                                     toggled: { [weak self] on in
+            self?.settings.doubleSpacePeriod = on
+            self?.onChange?()
+        }, tapped: nil))
         stack.addArrangedSubview(row(title: "Key clicks", subtitle: "Follows the system keyboard-click setting",
                                      isOn: settings.keyClicks, isCurrent: false,
                                      toggled: { [weak self] on in

@@ -7,6 +7,7 @@ struct ContentView: View {
     @State private var testText = ""
     @Environment(\.scenePhase) private var scenePhase
     @State private var isEnabled = KeyboardStatus.isEnabled()
+    @FocusState private var testFieldFocused: Bool
 
     var body: some View {
         NavigationStack {
@@ -45,6 +46,7 @@ struct ContentView: View {
                     TextField("Type here…", text: $testText, axis: .vertical)
                         .lineLimit(3...8)
                         .font(.title3)
+                        .focused($testFieldFocused)
                 }
 
                 Section("Using the keyboard") {
@@ -81,6 +83,12 @@ struct ContentView: View {
             .navigationTitle("Indic Keyboard")
         }
         .onChange(of: scenePhase) { _ in isEnabled = KeyboardStatus.isEnabled() }
+        .onAppear {
+            // Used by screenshot checks: `simctl launch … -focusTestField`
+            if ProcessInfo.processInfo.arguments.contains("-focusTestField") {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { testFieldFocused = true }
+            }
+        }
     }
 }
 

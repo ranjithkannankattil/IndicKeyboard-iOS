@@ -49,6 +49,24 @@ public final class KeyboardSettings {
         set { defaults.set(newValue, forKey: Key.clicks) }
     }
 
+    /// English: replace a misspelt word when space or punctuation is typed.
+    public var autocorrect: Bool {
+        get { defaults.object(forKey: "autocorrect") as? Bool ?? true }
+        set { defaults.set(newValue, forKey: "autocorrect") }
+    }
+
+    /// English: show word suggestions above the keys.
+    public var predictive: Bool {
+        get { defaults.object(forKey: "predictive") as? Bool ?? true }
+        set { defaults.set(newValue, forKey: "predictive") }
+    }
+
+    /// Double-tapping space types ". " (as on the iOS keyboard).
+    public var doubleSpacePeriod: Bool {
+        get { defaults.object(forKey: "doubleSpacePeriod") as? Bool ?? true }
+        set { defaults.set(newValue, forKey: "doubleSpacePeriod") }
+    }
+
     public func setEnabled(_ id: String, _ on: Bool) {
         var set = Set(enabledLayouts)
         if on { set.insert(id) } else { set.remove(id) }

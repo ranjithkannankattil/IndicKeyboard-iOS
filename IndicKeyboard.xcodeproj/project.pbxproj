@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EB18C3DEFFF52F66142E60CD /* Keyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8264AD33A0ECC18EB507A255; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		EB18C3DEFFF52F66142E60CD /* Keyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8264AD33A0ECC18EB507A255 /* Keyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,14 +41,30 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		28A0636017AEEB61BCDA9D56 /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; path = App; sourceTree = "<group>"; };
-		3169212A88DECACEEBBF8412 /* Keyboard */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Keyboard; sourceTree = "<group>"; };
-		07BDF86CC7E7B0AF0CD28C4B /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Shared; sourceTree = "<group>"; };
-		3B9716D01E3885F1E9A79001 /* Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Tests; sourceTree = "<group>"; };
+		07BDF86CC7E7B0AF0CD28C4B /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		28A0636017AEEB61BCDA9D56 /* App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = App;
+			sourceTree = "<group>";
+		};
+		3169212A88DECACEEBBF8412 /* Keyboard */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Keyboard;
+			sourceTree = "<group>";
+		};
+		3B9716D01E3885F1E9A79001 /* Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Tests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F72F053D4455B87BA57FD8AA /* Frameworks */ = {
+		6A80B374BC4F859A0B0F5EDD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -62,7 +78,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6A80B374BC4F859A0B0F5EDD /* Frameworks */ = {
+		F72F053D4455B87BA57FD8AA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -72,6 +88,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		86024CAD1E83101D97359D73 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				27AB7A5473181677E9D497D3 /* IndicKeyboard.app */,
+				8264AD33A0ECC18EB507A255 /* Keyboard.appex */,
+				EF59EB1952B5120FC0DEC101 /* IndicKeyboardTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FAD58DE7366495DB4650CFEF = {
 			isa = PBXGroup;
 			children = (
@@ -83,88 +109,78 @@
 			);
 			sourceTree = "<group>";
 		};
-		86024CAD1E83101D97359D73 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				27AB7A5473181677E9D497D3 /* IndicKeyboard.app */,
-				8264AD33A0ECC18EB507A255 /* Keyboard.appex */,
-				EF59EB1952B5120FC0DEC101 /* IndicKeyboardTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
 		778130C49534A4D32801D13D /* IndicKeyboard */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AC573CC2B6EF8ABF3A944EA0;
+			buildConfigurationList = AC573CC2B6EF8ABF3A944EA0 /* Build configuration list for PBXNativeTarget "IndicKeyboard" */;
 			buildPhases = (
-				A26B49697F3E690398527AAB,
-				F72F053D4455B87BA57FD8AA,
-				509E3C5AD660F43AEF16CAB4,
-				269605D45C104F12CBCDC8FB,
+				A26B49697F3E690398527AAB /* Sources */,
+				F72F053D4455B87BA57FD8AA /* Frameworks */,
+				509E3C5AD660F43AEF16CAB4 /* Resources */,
+				269605D45C104F12CBCDC8FB /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D73754C4923ED9CB0C0E3307,
+				D73754C4923ED9CB0C0E3307 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				28A0636017AEEB61BCDA9D56,
-				07BDF86CC7E7B0AF0CD28C4B,
+				07BDF86CC7E7B0AF0CD28C4B /* Shared */,
+				28A0636017AEEB61BCDA9D56 /* App */,
 			);
 			name = IndicKeyboard;
 			packageProductDependencies = (
 			);
 			productName = IndicKeyboard;
-			productReference = 27AB7A5473181677E9D497D3;
+			productReference = 27AB7A5473181677E9D497D3 /* IndicKeyboard.app */;
 			productType = "com.apple.product-type.application";
 		};
 		B1230C6A167F5CAD34BECB56 /* Keyboard */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FEC05FBF4F2A3A719CF6B306;
+			buildConfigurationList = FEC05FBF4F2A3A719CF6B306 /* Build configuration list for PBXNativeTarget "Keyboard" */;
 			buildPhases = (
-				E159F682352E32FF9C02F150,
-				9FBA5EBE3C97CEDAD527269C,
-				9616C6EA9A49901338E20BC4,
+				E159F682352E32FF9C02F150 /* Sources */,
+				9FBA5EBE3C97CEDAD527269C /* Frameworks */,
+				9616C6EA9A49901338E20BC4 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				3169212A88DECACEEBBF8412,
-				07BDF86CC7E7B0AF0CD28C4B,
+				07BDF86CC7E7B0AF0CD28C4B /* Shared */,
+				3169212A88DECACEEBBF8412 /* Keyboard */,
 			);
 			name = Keyboard;
 			packageProductDependencies = (
 			);
 			productName = Keyboard;
-			productReference = 8264AD33A0ECC18EB507A255;
+			productReference = 8264AD33A0ECC18EB507A255 /* Keyboard.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		FC6F5710690631C9367DD8FB /* IndicKeyboardTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ADC1F20AB0B62E2305F5C161;
+			buildConfigurationList = ADC1F20AB0B62E2305F5C161 /* Build configuration list for PBXNativeTarget "IndicKeyboardTests" */;
 			buildPhases = (
-				A35BCE426E46A9ADA3E55E6E,
-				6A80B374BC4F859A0B0F5EDD,
-				8FA3F42C85D79B550DC148DB,
+				A35BCE426E46A9ADA3E55E6E /* Sources */,
+				6A80B374BC4F859A0B0F5EDD /* Frameworks */,
+				8FA3F42C85D79B550DC148DB /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				3B9716D01E3885F1E9A79001,
-				07BDF86CC7E7B0AF0CD28C4B,
+				07BDF86CC7E7B0AF0CD28C4B /* Shared */,
+				3B9716D01E3885F1E9A79001 /* Tests */,
 			);
 			name = IndicKeyboardTests;
 			packageProductDependencies = (
 			);
 			productName = IndicKeyboardTests;
-			productReference = EF59EB1952B5120FC0DEC101;
+			productReference = EF59EB1952B5120FC0DEC101 /* IndicKeyboardTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -188,7 +204,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A7492CCDE30BE8F54F16B52E;
+			buildConfigurationList = A7492CCDE30BE8F54F16B52E /* Build configuration list for PBXProject "IndicKeyboard" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -217,14 +233,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9616C6EA9A49901338E20BC4 /* Resources */ = {
+		8FA3F42C85D79B550DC148DB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8FA3F42C85D79B550DC148DB /* Resources */ = {
+		9616C6EA9A49901338E20BC4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -241,14 +257,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E159F682352E32FF9C02F150 /* Sources */ = {
+		A35BCE426E46A9ADA3E55E6E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A35BCE426E46A9ADA3E55E6E /* Sources */ = {
+		E159F682352E32FF9C02F150 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -266,160 +282,28 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		7243013AAD8BB7CED635553C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_TESTABILITY = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				ONLY_ACTIVE_ARCH = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		5421742A60325CB4347096C3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		18072FA40F77611435FE4400 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				MARKETING_VERSION = 1.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
 				GENERATE_INFOPLIST_FILE = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboard;
 				INFOPLIST_KEY_CFBundleDisplayName = "Indic Keyboard";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-			};
-			name = Debug;
-		};
-		3A839BD519C3F73086F48792 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				GENERATE_INFOPLIST_FILE = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboard;
-				INFOPLIST_KEY_CFBundleDisplayName = "Indic Keyboard";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-			};
-			name = Release;
-		};
-		A42BE41CC43CEE4C0ED18F57 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				MARKETING_VERSION = 1.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				GENERATE_INFOPLIST_FILE = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboard.Keyboard;
-				INFOPLIST_FILE = "Config/Keyboard-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Indic Keyboard";
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				SKIP_INSTALL = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-			};
-			name = Debug;
-		};
-		B78610CAFF6EA2CE198CBB4C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				MARKETING_VERSION = 1.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				GENERATE_INFOPLIST_FILE = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboard.Keyboard;
-				INFOPLIST_FILE = "Config/Keyboard-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Indic Keyboard";
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				SKIP_INSTALL = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-			};
-			name = Release;
-		};
-		684E0400D81435D87A7666E7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				MARKETING_VERSION = 1.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				GENERATE_INFOPLIST_FILE = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboardTests;
 			};
 			name = Debug;
 		};
@@ -429,12 +313,144 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				MARKETING_VERSION = 1.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
 				GENERATE_INFOPLIST_FILE = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3A839BD519C3F73086F48792 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Indic Keyboard";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		5421742A60325CB4347096C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		684E0400D81435D87A7666E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7243013AAD8BB7CED635553C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A42BE41CC43CEE4C0ED18F57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Keyboard-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Indic Keyboard";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboard.Keyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B78610CAFF6EA2CE198CBB4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Keyboard-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Indic Keyboard";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ranjithkb.IndicKeyboard.Keyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -444,35 +460,35 @@
 		A7492CCDE30BE8F54F16B52E /* Build configuration list for PBXProject "IndicKeyboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7243013AAD8BB7CED635553C,
-				5421742A60325CB4347096C3,
+				7243013AAD8BB7CED635553C /* Debug */,
+				5421742A60325CB4347096C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AC573CC2B6EF8ABF3A944EA0 /* Build configuration list for IndicKeyboard */ = {
+		AC573CC2B6EF8ABF3A944EA0 /* Build configuration list for PBXNativeTarget "IndicKeyboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				18072FA40F77611435FE4400,
-				3A839BD519C3F73086F48792,
+				18072FA40F77611435FE4400 /* Debug */,
+				3A839BD519C3F73086F48792 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FEC05FBF4F2A3A719CF6B306 /* Build configuration list for Keyboard */ = {
+		ADC1F20AB0B62E2305F5C161 /* Build configuration list for PBXNativeTarget "IndicKeyboardTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A42BE41CC43CEE4C0ED18F57,
-				B78610CAFF6EA2CE198CBB4C,
+				684E0400D81435D87A7666E7 /* Debug */,
+				356D2FC784CB0420C817B793 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ADC1F20AB0B62E2305F5C161 /* Build configuration list for IndicKeyboardTests */ = {
+		FEC05FBF4F2A3A719CF6B306 /* Build configuration list for PBXNativeTarget "Keyboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				684E0400D81435D87A7666E7,
-				356D2FC784CB0420C817B793,
+				A42BE41CC43CEE4C0ED18F57 /* Debug */,
+				B78610CAFF6EA2CE198CBB4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

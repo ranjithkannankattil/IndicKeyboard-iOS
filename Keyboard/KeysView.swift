@@ -1,6 +1,7 @@
 //  KeysView.swift
-//  Draws the key grid and does its own touch tracking (one view for all keys),
-//  with key previews, long-press alternatives and touch rollover for fast typing.
+//  Draws the key grid with iOS-keyboard geometry and does its own touch tracking
+//  (one view for all keys), with key previews, long-press alternatives and touch
+//  rollover for fast typing.
 
 import UIKit
 
@@ -24,29 +25,62 @@ enum KeyColors {
     static let accent = UIColor.systemBlue
 }
 
+/// iOS keyboard geometry (iPhone). Measured from the system keyboard: 3pt side
+/// margins, 6pt between keys, ~42pt keys with ~12pt between rows in portrait.
+struct KeyMetrics {
+    let sideInset: CGFloat
+    let hGap: CGFloat
+    let vGap: CGFloat
+    let keyHeight: CGFloat
+    let topInset: CGFloat
+    let bottomInset: CGFloat
+
+    static func make(landscape: Bool, rowCount: Int) -> KeyMetrics {
+        if landscape {
+            return KeyMetrics(sideInset: 3, hGap: 6, vGap: 6, keyHeight: rowCount > 4 ? 28 : 32, topInset: 5, bottomInset: 3)
+        }
+        if rowCount > 4 {
+            return KeyMetrics(sideInset: 3, hGap: 5, vGap: 9, keyHeight: 39, topInset: 8, bottomInset: 4)
+        }
+        return KeyMetrics(sideInset: 3, hGap: 6, vGap: 12, keyHeight: 42, topInset: 10, bottomInset: 4)
+    }
+
+    func height(rows: Int) -> CGFloat {
+        topInset + CGFloat(rows) * keyHeight + CGFloat(max(0, rows - 1)) * vGap + bottomInset
+    }
+
+    static var cornerRadius: CGFloat {
+        if #available(iOS 26.0, *) { return 8.5 }
+        return 5
+    }
+}
+
 final class KeyCapView: UIView {
     let label = UILabel()
     let hintLabel = UILabel()
-    var spec: KeySpec { didSet { configure() } }
+    let icon = UIImageView()
+    var spec: KeySpec { didSet { if spec != oldValue { configure() } } }
     var isPressed = false { didSet { updateColor() } }
-    var isActiveState = false { didSet { updateColor() } }   // e.g. shift on
 
     init(spec: KeySpec) {
         self.spec = spec
         super.init(frame: .zero)
-        layer.cornerRadius = 5
+        layer.cornerRadius = KeyMetrics.cornerRadius
+        layer.cornerCurve = .continuous
         layer.shadowOffset = CGSize(width: 0, height: 1)
         layer.shadowOpacity = 1
         layer.shadowRadius = 0
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.5
+        label.minimumScaleFactor = 0.45
         label.baselineAdjustment = .alignCenters
         hintLabel.textAlignment = .right
         hintLabel.font = .systemFont(ofSize: 10)
         hintLabel.textColor = KeyColors.hint
+        icon.contentMode = .center
         addSubview(label)
         addSubview(hintLabel)
+        addSubview(icon)
         isUserInteractionEnabled = false
         configure()
     }
@@ -56,24 +90,36 @@ final class KeyCapView: UIView {
     private func configure() {
         label.text = spec.label
         hintLabel.text = spec.hint
-        let isLatinLetter = spec.label.count == 1 && spec.label.unicodeScalars.allSatisfy { $0.isASCII && CharacterSet.letters.contains($0) }
-        if spec.isFunction {
-            label.font = .systemFont(ofSize: spec.label.count > 2 ? 15 : 17)
-        } else if spec.action == .space {
-            label.font = .systemFont(ofSize: 15)
-        } else if isLatinLetter {
-            label.font = .systemFont(ofSize: 24)
+        if let s = spec.symbol {
+            icon.image = UIImage(systemName: s, withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .regular))
+            icon.isHidden = false
         } else {
-            label.font = .systemFont(ofSize: 22)
+            icon.image = nil
+            icon.isHidden = true
         }
-        label.textColor = spec.action == .space ? KeyColors.hint : KeyColors.text
+        let isLatinLetter = spec.label.count == 1 && spec.label.unicodeScalars.allSatisfy { $0.isASCII && CharacterSet.letters.contains($0) }
+        if spec.isFunction || spec.isAccent {
+            label.font = .systemFont(ofSize: 16)
+        } else if spec.action == .space {
+            label.font = .systemFont(ofSize: 16)
+        } else if isLatinLetter {
+            label.font = .systemFont(ofSize: 25)
+        } else {
+            label.font = .systemFont(ofSize: 23)
+        }
+        label.textColor = spec.isAccent ? .white : (spec.action == .space ? KeyColors.hint : KeyColors.text)
+        icon.tintColor = KeyColors.text
         updateColor()
     }
 
     private func updateColor() {
-        let base = spec.isFunction ? KeyColors.functionKey : KeyColors.key
-        if isActiveState { backgroundColor = KeyColors.key }
-        else { backgroundColor = isPressed ? (spec.isFunction ? KeyColors.key : KeyColors.pressed) : base }
+        if spec.isAccent {
+            backgroundColor = isPressed ? KeyColors.functionKey : KeyColors.accent
+        } else if spec.isFunction {
+            backgroundColor = isPressed ? KeyColors.key : KeyColors.functionKey
+        } else {
+            backgroundColor = isPressed ? KeyColors.pressed : KeyColors.key
+        }
         layer.shadowColor = KeyColors.shadow.cgColor
     }
 
@@ -85,6 +131,7 @@ final class KeyCapView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         label.frame = bounds.insetBy(dx: 2, dy: 1)
+        icon.frame = bounds
         hintLabel.frame = CGRect(x: 2, y: 1, width: bounds.width - 5, height: 12)
     }
 }
@@ -92,12 +139,13 @@ final class KeyCapView: UIView {
 final class KeysView: UIView {
     weak var delegate: KeysViewDelegate?
 
-    var rows: [[KeySpec]] = [] { didSet { if rows != oldValue || caps.isEmpty { rebuild() } else { refreshActive() } } }
-    var activeKeyPredicate: ((KeySpec) -> Bool)? { didSet { refreshActive() } }
+    var rows: [[KeySpec]] = [] { didSet { if rows != oldValue || caps.isEmpty { rebuild() } } }
+    var landscape = false { didSet { if landscape != oldValue { setNeedsLayout() } } }
 
     private var caps: [[KeyCapView]] = []
-    private let horizontalGap: CGFloat = 5
-    private let verticalGap: CGFloat = 10
+    private var rowBands: [ClosedRange<CGFloat>] = []
+    private var metrics: KeyMetrics { KeyMetrics.make(landscape: landscape, rowCount: rows.count) }
+    private var fitted: KeyMetrics?
 
     // Touch tracking
     private final class Tracked {
@@ -121,25 +169,24 @@ final class KeysView: UIView {
 
     required init?(coder: NSCoder) { fatalError() }
 
+    /// Reuses key views where the row shapes match, so shift / page changes don't flicker.
     private func rebuild() {
-        caps.flatMap { $0 }.forEach { $0.removeFromSuperview() }
-        caps = rows.map { row in row.map { spec in
-            let v = KeyCapView(spec: spec)
-            insertSubview(v, at: 0)
-            return v
-        } }
+        let sameShape = caps.count == rows.count && zip(caps, rows).allSatisfy { $0.count == $1.count }
+        if sameShape {
+            for (r, row) in rows.enumerated() { for (c, spec) in row.enumerated() { caps[r][c].spec = spec } }
+        } else {
+            caps.flatMap { $0 }.forEach { $0.removeFromSuperview() }
+            caps = rows.map { row in row.map { spec in
+                let v = KeyCapView(spec: spec)
+                insertSubview(v, at: 0)
+                return v
+            } }
+        }
         if preview.superview == nil { addSubview(preview) }
         if alternatives.superview == nil { addSubview(alternatives) }
         bringSubviewToFront(preview)
         bringSubviewToFront(alternatives)
-        refreshActive()
         setNeedsLayout()
-    }
-
-    private func refreshActive() {
-        for (r, row) in caps.enumerated() {
-            for (c, cap) in row.enumerated() { cap.isActiveState = activeKeyPredicate?(rows[r][c]) ?? false }
-        }
     }
 
     func frame(where match: (KeySpec) -> Bool) -> CGRect? {
@@ -149,44 +196,123 @@ final class KeysView: UIView {
         return nil
     }
 
+    // MARK: Layout
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        guard !rows.isEmpty else { return }
+        guard !rows.isEmpty, caps.count == rows.count else { return }
+        var m = metrics
+        let ideal = m.height(rows: rows.count)
+        if bounds.height > 0, bounds.height < ideal {
+            // The system gave us less height than requested: shrink keys and gaps to fit.
+            let k = bounds.height / ideal
+            m = KeyMetrics(sideInset: m.sideInset, hGap: m.hGap, vGap: m.vGap * k,
+                           keyHeight: m.keyHeight * k, topInset: m.topInset * k, bottomInset: m.bottomInset * k)
+        }
+        fitted = m
         let W = bounds.width
-        let rowH = bounds.height / CGFloat(rows.count)
-        let letterRows = rows.dropLast()
-        let maxUnits = max(10, letterRows.map { $0.reduce(0) { $0 + $1.width } }.max() ?? 10)
-        let unit = W / maxUnits
+        let usable = W - 2 * m.sideInset
+        let standardKey = (usable - 9 * m.hGap) / 10
+
+        // One letter-key width for all letter rows: the widest row must fit,
+        // leaving each function key at least one key wide.
+        var keyW = standardKey
+        for row in rows.dropLast() {
+            let chars = row.filter { !isEdgeFunction($0) }
+            let fns = row.count - chars.count
+            let units = chars.reduce(0) { $0 + $1.width } + CGFloat(fns)
+            let gaps = CGFloat(max(0, row.count - 1)) * m.hGap
+            if units > 0 { keyW = min(keyW, (usable - gaps) / units) }
+        }
+
+        rowBands = []
+        var y = m.topInset
         for (r, row) in rows.enumerated() {
-            let y = CGFloat(r) * rowH
-            let isBottom = r == rows.count - 1
-            let rowUnit = isBottom ? W / 10 : unit
-            let fixed = row.filter { !$0.flexible }.reduce(0) { $0 + $1.width } * rowUnit
-            let flexCount = CGFloat(row.filter { $0.flexible }.count)
-            let flexWidth = flexCount > 0 ? max(rowUnit, (W - fixed) / flexCount) : 0
-            let total = row.reduce(0) { $0 + ($1.flexible ? flexWidth : $1.width * rowUnit) }
-            var x = max(0, (W - total) / 2)
-            for (c, spec) in row.enumerated() {
-                let w = spec.flexible ? flexWidth : spec.width * rowUnit
-                caps[r][c].frame = CGRect(x: x + horizontalGap / 2, y: y + verticalGap / 2,
-                                          width: w - horizontalGap, height: rowH - verticalGap).integral
-                x += w
+            let frames = r == rows.count - 1
+                ? bottomRowFrames(row, standardKey: standardKey, m: m, W: W)
+                : letterRowFrames(row, keyW: keyW, m: m, W: W)
+            for (c, f) in frames.enumerated() {
+                caps[r][c].frame = CGRect(x: f.minX, y: y, width: f.width, height: m.keyHeight).integral
             }
+            rowBands.append((y - m.vGap / 2)...(y + m.keyHeight + m.vGap / 2))
+            y += m.keyHeight + m.vGap
         }
         delegate?.keysViewDidLayout(self)
+    }
+
+    private func isEdgeFunction(_ k: KeySpec) -> Bool {
+        switch k.action {
+        case .shift, .backspace: return true
+        case .page: return k.isFunction
+        default: return false
+        }
+    }
+
+    /// Character keys centred (this is what indents the second row); shift / page
+    /// keys pinned to the left edge and delete to the right, like iOS.
+    private func letterRowFrames(_ row: [KeySpec], keyW: CGFloat, m: KeyMetrics, W: CGFloat) -> [CGRect] {
+        // Edge keys at the start and end of the row; anything between stays inline.
+        let first = row.firstIndex { !isEdgeFunction($0) } ?? row.count
+        let last = row.lastIndex { !isEdgeFunction($0) } ?? -1
+        let leading = Array(0..<min(first, row.count))
+        let middle: [Int] = first <= last ? Array(first...last) : []
+        let trailing: [Int] = last + 1 < row.count ? Array(max(last + 1, first)..<row.count) : []
+        var frames = [CGRect](repeating: .zero, count: row.count)
+        let charsWidth = middle.reduce(CGFloat(0)) { $0 + row[$1].width * keyW } + CGFloat(max(0, middle.count - 1)) * m.hGap
+        var cx = (W - charsWidth) / 2
+        for i in middle {
+            let w = row[i].width * keyW
+            frames[i] = CGRect(x: cx, y: 0, width: w, height: 0)
+            cx += w + m.hGap
+        }
+        let room = (W - charsWidth) / 2 - m.sideInset
+        func place(_ idx: [Int], fromLeft: Bool) {
+            guard !idx.isEmpty else { return }
+            // iOS leaves a wider gap between shift/delete and the letters than between letters.
+            let edgeGap = max(m.hGap, min(room * 0.25, 14))
+            let fit = (room - edgeGap - CGFloat(idx.count - 1) * m.hGap) / CGFloat(idx.count)
+            let each = max(keyW * 0.8, min(fit, row[idx[0]].width * keyW))
+            let ordered: [Int] = fromLeft ? idx : Array(idx.reversed())
+            let step = each + m.hGap
+            var x = fromLeft ? m.sideInset : W - m.sideInset - each
+            for i in ordered {
+                frames[i] = CGRect(x: x, y: 0, width: each, height: 0)
+                if fromLeft { x += step } else { x -= step }
+            }
+        }
+        place(leading, fromLeft: true)
+        place(trailing, fromLeft: false)
+        return frames
+    }
+
+    private func bottomRowFrames(_ row: [KeySpec], standardKey: CGFloat, m: KeyMetrics, W: CGFloat) -> [CGRect] {
+        func fixedWidth(_ k: KeySpec) -> CGFloat { k.width * standardKey + max(0, k.width - 1) * m.hGap * 0.5 }
+        let fixed = row.filter { !$0.flexible }.reduce(CGFloat(0)) { $0 + fixedWidth($1) }
+        let gaps = CGFloat(max(0, row.count - 1)) * m.hGap
+        let flexCount = CGFloat(row.filter(\.flexible).count)
+        let flex = flexCount > 0 ? max(standardKey, (W - 2 * m.sideInset - fixed - gaps) / flexCount) : 0
+        var x = m.sideInset
+        var out: [CGRect] = []
+        for k in row {
+            let w = k.flexible ? flex : fixedWidth(k)
+            out.append(CGRect(x: x, y: 0, width: w, height: 0))
+            x += w + m.hGap
+        }
+        return out
     }
 
     // MARK: Hit testing
 
     private func keyIndex(at p: CGPoint) -> (Int, Int)? {
-        guard !rows.isEmpty, bounds.height > 0 else { return nil }
-        let rowH = bounds.height / CGFloat(rows.count)
-        let r = min(rows.count - 1, max(0, Int(p.y / rowH)))
+        guard !rows.isEmpty, rowBands.count == rows.count else { return nil }
+        var r = rowBands.firstIndex { $0.contains(p.y) } ?? (p.y < rowBands[0].lowerBound ? 0 : rows.count - 1)
+        r = min(max(0, r), rows.count - 1)
+        let gap = (fitted ?? metrics).hGap
         var best: (Int, CGFloat)?
         for (c, cap) in caps[r].enumerated() {
-            let f = cap.frame.insetBy(dx: -horizontalGap / 2, dy: 0)
+            let f = cap.frame.insetBy(dx: -gap / 2, dy: 0)
             if p.x >= f.minX && p.x < f.maxX { return (r, c) }
-            let d = abs(p.x - f.midX)
+            let d = min(abs(p.x - f.minX), abs(p.x - f.maxX))
             if best == nil || d < best!.1 { best = (c, d) }
         }
         return best.map { (r, $0.0) }
@@ -300,13 +426,14 @@ final class PreviewBalloon: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = KeyColors.key
-        layer.cornerRadius = 8
+        layer.cornerRadius = 10
+        layer.cornerCurve = .continuous
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.25
         layer.shadowRadius = 3
         layer.shadowOffset = CGSize(width: 0, height: 1)
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 30)
+        label.font = .systemFont(ofSize: 34)
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.4
         label.textColor = KeyColors.text
@@ -317,11 +444,11 @@ final class PreviewBalloon: UIView {
 
     func show(_ text: String, above keyFrame: CGRect, in bounds: CGRect) {
         label.text = text
-        let w = max(keyFrame.width + 16, 46)
-        let h = keyFrame.height + 8
+        let w = max(keyFrame.width + 18, 48)
+        let h = keyFrame.height + 12
         var x = keyFrame.midX - w / 2
         x = min(max(0, x), bounds.width - w)
-        frame = CGRect(x: x, y: max(-40, keyFrame.minY - h - 4), width: w, height: h)
+        frame = CGRect(x: x, y: max(-50, keyFrame.minY - h - 2), width: w, height: h)
         label.frame = self.bounds.insetBy(dx: 4, dy: 2)
         isHidden = false
         superview?.bringSubviewToFront(self)
@@ -337,7 +464,8 @@ final class AlternativesPopup: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = KeyColors.key
-        layer.cornerRadius = 8
+        layer.cornerRadius = 10
+        layer.cornerCurve = .continuous
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.3
         layer.shadowRadius = 4
@@ -352,10 +480,10 @@ final class AlternativesPopup: UIView {
             let l = UILabel()
             l.text = o
             l.textAlignment = .center
-            l.font = .systemFont(ofSize: 22)
+            l.font = .systemFont(ofSize: 24)
             l.adjustsFontSizeToFitWidth = true
             l.minimumScaleFactor = 0.5
-            l.layer.cornerRadius = 6
+            l.layer.cornerRadius = 7
             l.clipsToBounds = true
             addSubview(l)
             return l
@@ -364,7 +492,7 @@ final class AlternativesPopup: UIView {
         let h = keyFrame.height + 6
         var x = keyFrame.midX - w / 2
         x = min(max(0, x), max(0, bounds.width - w))
-        frame = CGRect(x: x, y: max(-40, keyFrame.minY - h - 4), width: w, height: h)
+        frame = CGRect(x: x, y: max(-50, keyFrame.minY - h - 4), width: w, height: h)
         for (i, l) in labels.enumerated() {
             l.frame = CGRect(x: 4 + CGFloat(i) * cellWidth, y: 3, width: cellWidth, height: h - 6)
         }

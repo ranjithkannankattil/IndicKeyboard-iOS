@@ -1,18 +1,26 @@
 //  CandidateBar.swift
-//  The strip above the keys: Swanalekha alternatives while typing (the phone
-//  version of pressing Tab), the raw Latin word, and the ⚙ button when idle.
+//  The strip above the keys. English: iOS-style slots ("typed", correction,
+//  completion). Swanalekha: the alternatives for the last letter (the phone version
+//  of pressing Tab), scrollable. Idle: ⚙ and the layout name.
 
 import UIKit
 
+struct BarItem: Equatable {
+    var title: String
+    var bold = false        // the suggestion that space will apply
+    var dim = false         // e.g. the literal typed word
+}
+
 final class CandidateBar: UIView {
-    var onSelect: ((Candidate, Int) -> Void)?
+    var onSelect: ((Int) -> Void)?
     var onSettings: (() -> Void)?
 
     private let settingsButton = UIButton(type: .system)
     private let scroll = UIScrollView()
-    private let stack = UIStackView()
+    private var buttons: [UIButton] = []
+    private var separators: [UIView] = []
     private let idleLabel = UILabel()
-    private var candidates: [Candidate] = []
+    private var items: [BarItem] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,18 +30,15 @@ final class CandidateBar: UIView {
         settingsButton.accessibilityLabel = "Keyboard settings"
 
         scroll.showsHorizontalScrollIndicator = false
-        scroll.alwaysBounceHorizontal = true
-        stack.axis = .horizontal
-        stack.spacing = 0
-        stack.alignment = .fill
-        scroll.addSubview(stack)
+        scroll.alwaysBounceHorizontal = false
 
         idleLabel.font = .systemFont(ofSize: 14)
         idleLabel.textColor = .secondaryLabel
+        idleLabel.textAlignment = .center
 
-        addSubview(settingsButton)
         addSubview(scroll)
         addSubview(idleLabel)
+        addSubview(settingsButton)
     }
 
     required init?(coder: NSCoder) { fatalError() }
@@ -41,39 +46,73 @@ final class CandidateBar: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         let h = bounds.height
+        settingsButton.isHidden = !items.isEmpty
         settingsButton.frame = CGRect(x: 4, y: 0, width: 40, height: h)
-        scroll.frame = CGRect(x: 48, y: 0, width: bounds.width - 52, height: h)
-        idleLabel.frame = scroll.frame.insetBy(dx: 6, dy: 0)
-        layoutStack()
+        idleLabel.frame = bounds.insetBy(dx: 48, dy: 0)
+        scroll.frame = bounds
+        layoutButtons()
     }
 
-    private func layoutStack() {
-        let size = stack.systemLayoutSizeFitting(CGSize(width: UIView.layoutFittingCompressedSize.width, height: scroll.bounds.height))
-        stack.frame = CGRect(x: 0, y: 0, width: max(size.width, 1), height: scroll.bounds.height)
-        scroll.contentSize = stack.frame.size
+    private var hairline: CGFloat { 1 / max(1, window?.screen.scale ?? 2) }
+
+    private func layoutButtons() {
+        let h = scroll.bounds.height
+        let W = scroll.bounds.width
+        if items.count <= 3 {
+            // Equal slots across the bar, like the iOS predictive bar.
+            let slot = W / CGFloat(max(1, items.count))
+            for (i, b) in buttons.enumerated() {
+                b.frame = CGRect(x: CGFloat(i) * slot + 3, y: 4, width: slot - 6, height: h - 8)
+            }
+            for (i, s) in separators.enumerated() {
+                s.frame = CGRect(x: slot * CGFloat(i + 1), y: h * 0.25, width: hairline, height: h * 0.5)
+            }
+            scroll.contentSize = scroll.bounds.size
+        } else {
+            var x: CGFloat = 4
+            for (i, b) in buttons.enumerated() {
+                let w = max(56, b.intrinsicContentSize.width + 24)
+                b.frame = CGRect(x: x, y: 4, width: w, height: h - 8)
+                x += w
+                if i < separators.count {
+                    separators[i].frame = CGRect(x: x, y: h * 0.25, width: hairline, height: h * 0.5)
+                }
+            }
+            scroll.contentSize = CGSize(width: x + 4, height: h)
+        }
     }
 
-    /// Shows candidates; index 0 is the word as currently rendered (highlighted).
-    func show(_ list: [Candidate]) {
-        candidates = list
-        stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    func show(_ list: [BarItem]) {
+        guard list != items || buttons.count != list.count else { return }
+        items = list
+        buttons.forEach { $0.removeFromSuperview() }
+        separators.forEach { $0.removeFromSuperview() }
+        buttons = []
+        separators = []
         idleLabel.isHidden = !list.isEmpty
-        for (i, c) in list.enumerated() {
+        for (i, item) in list.enumerated() {
             let b = UIButton(type: .system)
-            b.setTitle(c.text, for: .normal)
-            let isLatin = c.keys == nil
-            b.titleLabel?.font = i == 0 ? .boldSystemFont(ofSize: 19) : .systemFont(ofSize: isLatin ? 16 : 19)
-            b.setTitleColor(isLatin ? .secondaryLabel : .label, for: .normal)
-            b.contentEdgeInsets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+            b.setTitle(item.title, for: .normal)
+            b.titleLabel?.font = item.bold ? .systemFont(ofSize: 18, weight: .semibold) : .systemFont(ofSize: 18)
+            b.titleLabel?.adjustsFontSizeToFitWidth = true
+            b.titleLabel?.minimumScaleFactor = 0.6
+            b.titleLabel?.lineBreakMode = .byTruncatingMiddle
+            b.setTitleColor(item.dim ? .secondaryLabel : .label, for: .normal)
+            if item.bold {
+                b.backgroundColor = UIColor.label.withAlphaComponent(0.08)
+                b.layer.cornerRadius = 8
+                b.layer.cornerCurve = .continuous
+            }
             b.tag = i
             b.addTarget(self, action: #selector(candidateTapped(_:)), for: .touchUpInside)
-            if i > 0 {
-                let sep = UIView()
-                sep.backgroundColor = .separator
-                sep.widthAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale).isActive = true
-                stack.addArrangedSubview(sep)
+            scroll.addSubview(b)
+            buttons.append(b)
+            if i < list.count - 1 {
+                let s = UIView()
+                s.backgroundColor = .separator
+                scroll.addSubview(s)
+                separators.append(s)
             }
-            stack.addArrangedSubview(b)
         }
         scroll.contentOffset = .zero
         setNeedsLayout()
@@ -82,11 +121,12 @@ final class CandidateBar: UIView {
     func showIdle(_ text: String) {
         show([])
         idleLabel.text = text
+        setNeedsLayout()
     }
 
     @objc private func candidateTapped(_ b: UIButton) {
-        guard b.tag < candidates.count else { return }
-        onSelect?(candidates[b.tag], b.tag)
+        guard b.tag < items.count else { return }
+        onSelect?(b.tag)
     }
 
     @objc private func settingsTapped() { onSettings?() }
