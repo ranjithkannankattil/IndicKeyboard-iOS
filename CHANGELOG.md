@@ -2,6 +2,11 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.3.4] — 2026-10-26
+
+### Changed
+- Thinner bar above the keys (32 pt, was 38; 26 pt in landscape) when iOS grants less than the requested height, so keys get about 41 pt on an iPhone 15. Suggestion buttons fill more of the bar so they stay easy to tap.
+
 ## [0.3.3] — 2026-10-26
 
 ### Fixed

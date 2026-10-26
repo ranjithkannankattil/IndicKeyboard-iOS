@@ -43,7 +43,7 @@ final class KeyboardViewController: UIInputViewController {
     private var barHeight: CGFloat {
         let h = view.bounds.height
         guard h > 0, h < preferredHeight() - 1 else { return candidateHeight }
-        return isLandscape ? 30 : 38
+        return isLandscape ? 26 : 32
     }
 
     // MARK: Lifecycle

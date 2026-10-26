@@ -63,7 +63,7 @@ final class CandidateBar: UIView {
             // Equal slots across the bar, like the iOS predictive bar.
             let slot = W / CGFloat(max(1, items.count))
             for (i, b) in buttons.enumerated() {
-                b.frame = CGRect(x: CGFloat(i) * slot + 3, y: 4, width: slot - 6, height: h - 8)
+                b.frame = CGRect(x: CGFloat(i) * slot + 3, y: 2, width: slot - 6, height: h - 4)
             }
             for (i, s) in separators.enumerated() {
                 s.frame = CGRect(x: slot * CGFloat(i + 1), y: h * 0.25, width: hairline, height: h * 0.5)
@@ -73,7 +73,7 @@ final class CandidateBar: UIView {
             var x: CGFloat = 4
             for (i, b) in buttons.enumerated() {
                 let w = max(56, b.intrinsicContentSize.width + 24)
-                b.frame = CGRect(x: x, y: 4, width: w, height: h - 8)
+                b.frame = CGRect(x: x, y: 2, width: w, height: h - 4)
                 x += w
                 if i < separators.count {
                     separators[i].frame = CGRect(x: x, y: h * 0.25, width: hairline, height: h * 0.5)
