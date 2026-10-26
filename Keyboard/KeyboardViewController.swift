@@ -156,7 +156,8 @@ final class KeyboardViewController: UIInputViewController {
     // MARK: Layout & state
 
     private func loadLayout(_ id: String) {
-        composer.commit()
+        // The document context lags behind our own edits, so remember what we just wrote.
+        let committed = composer.commit()
         let info = LayoutCatalog.info(id) ?? LayoutCatalog.all[0]
         layout = info
         engine = nil
@@ -174,7 +175,7 @@ final class KeyboardViewController: UIInputViewController {
         page = .letters
         shift = .off
         lastCorrection = nil
-        updateAutoShift()
+        updateAutoShift(justWritten: committed, switchingLayout: true)
         rebuildKeys()
         updateCandidates()
         heightConstraint?.constant = preferredHeight()
@@ -530,10 +531,18 @@ final class KeyboardViewController: UIInputViewController {
     }
 
     /// Sentence-start capitals for English only (case changes meaning in Swanalekha).
-    private func updateAutoShift() {
+    private func updateAutoShift(justWritten: String = "", switchingLayout: Bool = false) {
         guard layout.kind == .english, page == .letters, shift != .locked else { return }
         let type = textDocumentProxy.autocapitalizationType ?? .sentences
-        let before = textDocumentProxy.documentContextBeforeInput ?? ""
+        let context = textDocumentProxy.documentContextBeforeInput ?? ""
+        // On a layout switch the context can still be empty while the field has text
+        // (Malayalam that was underlined a moment ago). Don't guess a sentence start then.
+        if switchingLayout, context.isEmpty, justWritten.isEmpty, textDocumentProxy.hasText,
+           (textDocumentProxy.documentContextAfterInput ?? "").isEmpty {
+            shift = .off
+            return
+        }
+        let before = context.hasSuffix(justWritten) ? context : context + justWritten
         let trimmed = before.replacingOccurrences(of: " ", with: "")
         var cap = false
         switch type {

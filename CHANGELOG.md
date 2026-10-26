@@ -2,6 +2,12 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.3.6] — 2026-10-26
+### Fixed
+- Switching from Swanalekha to English no longer turns on Shift in the middle of a sentence. The keyboard now counts the Malayalam word it has just written instead of trusting the text field's context, which is still empty for a moment after the switch.
+### Changed
+- Capital letters on the keys are drawn smaller (21 pt instead of 25) so they sit inside the key like on Apple's keyboard, in English and Swanalekha.
+
 ## [0.3.5] — 2026-10-26
 ### Fixed
 - No more separate rounded strip above the suggestion bar on iOS 26. iOS 26 draws its own glass panel around every keyboard, with a little padding above the keys that apps can't draw into. Our grey background didn't match that panel, so the padding showed as a stripe. On iOS 26 the keyboard background is now transparent and blends into the system panel; older iOS versions keep the grey background.

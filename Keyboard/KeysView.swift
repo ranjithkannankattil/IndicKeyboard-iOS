@@ -133,7 +133,9 @@ final class KeyCapView: UIView {
         } else if spec.action == .space {
             label.font = .systemFont(ofSize: 16)
         } else if isLatinLetter {
-            label.font = .systemFont(ofSize: 25)
+            // Capitals are taller glyphs, so draw them smaller to sit inside the key like Apple's.
+            let isCapital = spec.label.uppercased() == spec.label && spec.label.lowercased() != spec.label
+            label.font = .systemFont(ofSize: isCapital ? 21 : 25)
         } else {
             label.font = .systemFont(ofSize: 23)
         }

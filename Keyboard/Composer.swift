@@ -51,10 +51,13 @@ final class Composer {
         if keys.isEmpty { finish(with: "") } else { render() }
     }
 
-    /// Commits the current word as the engine renders it.
-    func commit() {
-        guard isComposing, let e = engine else { return }
-        finish(with: e.output(for: keys))
+    /// Commits the current word as the engine renders it, and returns what was written.
+    @discardableResult
+    func commit() -> String {
+        guard isComposing, let e = engine else { return "" }
+        let out = e.output(for: keys)
+        finish(with: out)
+        return out
     }
 
     /// Commits the word followed by a space, letting the engine see the space
