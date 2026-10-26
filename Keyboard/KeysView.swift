@@ -228,10 +228,16 @@ final class KeysView: UIView {
         var m = metrics
         let ideal = m.height(rows: rows.count)
         if bounds.height > 0, bounds.height < ideal {
-            // The system gave us less height than requested: shrink keys and gaps to fit.
-            let k = bounds.height / ideal
-            m = KeyMetrics(sideInset: m.sideInset, hGap: m.hGap, vGap: m.vGap * k,
-                           keyHeight: m.keyHeight * k, topInset: m.topInset * k, bottomInset: m.bottomInset * k)
+            // iOS gave less height than requested. Like the system keyboard, squeeze the margins
+            // and gaps first and keep the keys as tall as possible.
+            let n = CGFloat(rows.count)
+            let top = min(m.topInset, landscape ? 4 : 6)
+            let bottom = min(m.bottomInset, landscape ? 2 : 3)
+            let minGap: CGFloat = landscape ? 4 : (rows.count > 4 ? 6 : 8)
+            let keyH = min(m.keyHeight, (bounds.height - top - bottom - (n - 1) * minGap) / n)
+            let gap = n > 1 ? max(0, (bounds.height - top - bottom - n * keyH) / (n - 1)) : 0
+            m = KeyMetrics(sideInset: m.sideInset, hGap: m.hGap, vGap: gap,
+                           keyHeight: keyH, topInset: top, bottomInset: bottom)
         }
         fitted = m
         let W = bounds.width

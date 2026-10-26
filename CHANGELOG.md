@@ -2,6 +2,15 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.3.3] — 2026-10-26
+
+### Fixed
+- **Keys were smaller than the iPhone keyboard's.** iOS 26 decides a third-party keyboard's height itself and ignores the height the keyboard asks for (tested: constraints at every priority, set at load / before / after appearing, self-sizing input view, intrinsic size, `preferredContentSize` — iOS keeps its own `UIView-Encapsulated-Layout-Height`, 216 pt in the simulator and about 231 pt on an iPhone 15, against about 258 pt for Apple's keyboard). Previously everything was scaled down evenly to fit, so keys shrank to about 37 pt. Now the bar above the keys gets slimmer and the gaps tighter first, keeping the keys as tall as possible: **about 40 pt on an iPhone 15** (Apple's are 42 pt).
+- Removed the self-sizing / intrinsic-size code added in 0.3.2: it did not help and is not needed. The keyboard still asks for its full height (at a lower priority, as early as possible) in case a future iOS honours it.
+
+### Notes
+- The text box staying above the keyboard (0.3.2) works: the keyboard's height no longer changes while it is on screen, so apps place the text box correctly.
+
 ## [0.3.2] — 2026-10-26
 
 ### Fixed
@@ -9,7 +18,7 @@ All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Version
 - **The keyboard no longer changes height** when switching layouts or opening emoji or settings. The height is now fixed per orientation, and 5-row layouts (InScript and others) fit their keys into the same height.
 
 ### Changed
-- **Slightly taller keys**, closer to the iPhone keyboard: 45 pt keys in portrait (was 42), with a little more space below the bottom row. Landscape keys are a little taller too.
+- Asked iOS for slightly taller keys (45 pt). iOS 26 turned out not to grant the extra height; see 0.3.3.
 - **The bar above the keys shows just ⚙ when idle.** The layout name is no longer printed next to it; the space bar already shows which layout is on.
 
 ## [0.3.1] — 2026-10-26

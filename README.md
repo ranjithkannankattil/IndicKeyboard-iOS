@@ -4,7 +4,7 @@ A Malayalam keyboard for iPhone and iPad, ported from the open-source Android [I
 
 > ⚠️ **Status: alpha.** This app has just been built and **alpha testing is in progress**. Expect rough edges and changes. If something doesn't work, please open an [Issue](../../issues) describing what happened.
 
-**Current version: 0.3.2 (alpha)** — see [CHANGELOG.md](CHANGELOG.md) for every version and change.
+**Current version: 0.3.3 (alpha)** — see [CHANGELOG.md](CHANGELOG.md) for every version and change.
 
 ## How do I get it on my iPhone?
 

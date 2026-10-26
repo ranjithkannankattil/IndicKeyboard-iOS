@@ -6,14 +6,6 @@ import UIKit
 /// Input view that opts into the system keyboard-click sound.
 final class KeyboardInputView: UIInputView, UIInputViewAudioFeedback {
     var enableInputClicksWhenVisible: Bool { true }
-    /// Height the keyboard wants. Reported to iOS before the keyboard appears, so the app
-    /// knows the final size up front and moves its text box above the keys.
-    var preferredHeight: CGFloat = 0 {
-        didSet { if preferredHeight != oldValue { invalidateIntrinsicContentSize() } }
-    }
-    override var intrinsicContentSize: CGSize {
-        CGSize(width: UIView.noIntrinsicMetric, height: preferredHeight)
-    }
 }
 
 final class KeyboardViewController: UIInputViewController {
@@ -46,6 +38,14 @@ final class KeyboardViewController: UIInputViewController {
 
     private var candidateHeight: CGFloat { isLandscape ? 36 : 44 }
 
+    /// The bar above the keys. When iOS grants less height than requested, the bar gives up
+    /// space first so the keys stay as large as possible (like the system keyboard).
+    private var barHeight: CGFloat {
+        let h = view.bounds.height
+        guard h > 0, h < preferredHeight() - 1 else { return candidateHeight }
+        return isLandscape ? 30 : 38
+    }
+
     // MARK: Lifecycle
 
     override func loadView() {
@@ -56,10 +56,8 @@ final class KeyboardViewController: UIInputViewController {
         super.viewDidLoad()
         view.backgroundColor = KeyColors.background
         view.clipsToBounds = false
-        // Ask for the full height now, before the keyboard is shown. If the height only
-        // arrives after it is on screen, many apps have already placed their text box for
-        // a shorter keyboard and the keys end up covering it.
-        (view as? UIInputView)?.allowsSelfSizing = true
+        // Ask for the full height as early as possible (iOS 26 applies it, if at all, when the
+        // keyboard is first sized). The keys adapt to whatever height iOS actually grants.
         installHeightConstraint()
 
         candidateBar.onSelect = { [weak self] i in self?.candidateChosen(i) }
@@ -92,30 +90,26 @@ final class KeyboardViewController: UIInputViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         let target = preferredHeight()
-        if heightConstraint?.constant != target {
-            heightConstraint?.constant = target
-            (view as? KeyboardInputView)?.preferredHeight = target
-        }
+        if heightConstraint?.constant != target { heightConstraint?.constant = target }
         keysView.landscape = isLandscape
         emojiPanel?.landscape = isLandscape
-        candidateBar.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: candidateHeight)
-        keysView.frame = CGRect(x: 0, y: candidateHeight, width: view.bounds.width, height: view.bounds.height - candidateHeight)
+        let bar = barHeight
+        candidateBar.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: bar)
+        keysView.frame = CGRect(x: 0, y: bar, width: view.bounds.width, height: view.bounds.height - bar)
         settingsPanel?.frame = view.bounds
         emojiPanel?.frame = view.bounds
     }
 
-    /// Installed in viewDidLoad so the size is known before the keyboard appears, and
-    /// re-checked in viewWillAppear/viewDidAppear and on rotation (only the orientation
-    /// changes it).
+    /// Installed in viewDidLoad and re-checked in viewWillAppear/viewDidAppear and on rotation
+    /// (only the orientation changes it).
     private func installHeightConstraint() {
         let target = preferredHeight()
-        (view as? KeyboardInputView)?.preferredHeight = target
         if let h = heightConstraint {
             if h.constant != target { h.constant = target }
             return
         }
         let h = view.heightAnchor.constraint(equalToConstant: target)
-        h.priority = UILayoutPriority(999)
+        h.priority = .defaultHigh
         h.isActive = true
         heightConstraint = h
     }
