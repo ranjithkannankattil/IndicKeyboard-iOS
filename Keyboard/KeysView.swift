@@ -49,12 +49,23 @@ struct KeyMetrics {
 
     static func make(landscape: Bool, rowCount: Int) -> KeyMetrics {
         if landscape {
-            return KeyMetrics(sideInset: 3, hGap: 6, vGap: 6, keyHeight: rowCount > 4 ? 28 : 32, topInset: 5, bottomInset: 3)
+            if rowCount > 4 {
+                return KeyMetrics(sideInset: 3, hGap: 6, vGap: 5, keyHeight: 29, topInset: 5, bottomInset: 3)
+            }
+            return KeyMetrics(sideInset: 3, hGap: 6, vGap: 6, keyHeight: 34, topInset: 6, bottomInset: 4)
         }
         if rowCount > 4 {
-            return KeyMetrics(sideInset: 3, hGap: 5, vGap: 9, keyHeight: 39, topInset: 8, bottomInset: 4)
+            // Same overall height as the 4-row keyboard, so switching layouts never resizes it.
+            return KeyMetrics(sideInset: 3, hGap: 5, vGap: 8, keyHeight: 38, topInset: 8, bottomInset: 6)
         }
-        return KeyMetrics(sideInset: 3, hGap: 6, vGap: 12, keyHeight: 42, topInset: 10, bottomInset: 4)
+        return KeyMetrics(sideInset: 3, hGap: 6, vGap: 12, keyHeight: 45, topInset: 10, bottomInset: 6)
+    }
+
+    /// Height of the key area. Fixed per orientation (based on the 4-row keyboard), so the
+    /// keyboard is the same height for every layout, page and panel, and apps can place
+    /// the text box above it once, before it appears.
+    static func keyAreaHeight(landscape: Bool) -> CGFloat {
+        make(landscape: landscape, rowCount: 4).height(rows: 4)
     }
 
     func height(rows: Int) -> CGFloat {

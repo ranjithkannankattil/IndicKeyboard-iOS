@@ -1,7 +1,7 @@
 //  CandidateBar.swift
 //  The strip above the keys. English: iOS-style slots ("typed", correction,
 //  completion). Swanalekha: the alternatives for the last letter (the phone version
-//  of pressing Tab), scrollable. Idle: ⚙ and the layout name.
+//  of pressing Tab), scrollable. Idle: just ⚙.
 
 import UIKit
 

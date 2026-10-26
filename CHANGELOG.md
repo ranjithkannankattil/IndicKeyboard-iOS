@@ -2,6 +2,16 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.3.2] — 2026-10-26
+
+### Fixed
+- **Keyboard could cover the text box** in some apps. The keyboard now tells iOS its full height before it appears (self-sizing input view plus a height constraint set when it loads), so apps can place the text box above it from the start instead of after it has grown.
+- **The keyboard no longer changes height** when switching layouts or opening emoji or settings. The height is now fixed per orientation, and 5-row layouts (InScript and others) fit their keys into the same height.
+
+### Changed
+- **Slightly taller keys**, closer to the iPhone keyboard: 45 pt keys in portrait (was 42), with a little more space below the bottom row. Landscape keys are a little taller too.
+- **The bar above the keys shows just ⚙ when idle.** The layout name is no longer printed next to it; the space bar already shows which layout is on.
+
 ## [0.3.1] — 2026-10-26
 
 ### Added
