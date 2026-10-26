@@ -123,21 +123,24 @@ public final class JQueryIMEEngine: TransliterationEngine {
     /// Converts a JavaScript String.replace() replacement into an ICU template.
     /// JS: $1…$9 groups, $& whole match, $$ literal dollar; backslash is literal.
     static func icuTemplate(fromJS js: String) -> String {
-        var out = ""
-        let chars = Array(js)
+        // Work on code points: as Characters, "1ാ" (digit + vowel sign) would be one cluster.
+        var out = String.UnicodeScalarView()
+        let chars = Array(js.unicodeScalars)
         var i = 0
         while i < chars.count {
             let c = chars[i]
             if c == "$", i + 1 < chars.count {
                 let n = chars[i + 1]
-                if n.isASCII, n.isNumber { out += "$" + String(n); i += 2; continue }
-                if n == "&" { out += "$0"; i += 2; continue }
-                if n == "$" { out += "\\$"; i += 2; continue }
+                if ("0"..."9").contains(n) { out.append(c); out.append(n); i += 2; continue }
+                if n == "&" { out.append(contentsOf: "$0".unicodeScalars); i += 2; continue }
+                if n == "$" { out.append(contentsOf: "\\$".unicodeScalars); i += 2; continue }
             }
-            if c == "\\" { out += "\\\\" } else if c == "$" { out += "\\$" } else { out.append(c) }
+            if c == "\\" { out.append(contentsOf: "\\\\".unicodeScalars) }
+            else if c == "$" { out.append(contentsOf: "\\$".unicodeScalars) }
+            else { out.append(c) }
             i += 1
         }
-        return out
+        return String(out)
     }
 
     /// One jquery.ime transliterate() call. Returns the replaced input.
