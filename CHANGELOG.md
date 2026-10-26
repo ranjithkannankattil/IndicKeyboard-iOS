@@ -2,6 +2,10 @@
 
 All notable changes to Indic Keyboard for iOS. Versions follow [Semantic Versioning](https://semver.org); each release is tagged in git (`v0.1.0`, `v0.1.1`, …).
 
+## [0.4.4] — 2026-10-26
+### Fixed
+- **Swanalekha lost letters when typing fast** (fine when typing slowly; English unaffected). Swanalekha rewrites the word on every key (k → ക്, ka → ക). The app reports each change back, and the keyboard used those reports to notice if you had moved the cursor. When typing fast, the report for an earlier key arrived after later keys, didn't match the latest version of the word, and the keyboard abandoned the word. It now accepts any version of the current word it has sent.
+
 ## [0.4.3] — 2026-10-26
 ### Fixed
 - Missing and late keystrokes (a, backspace, the top row), which 0.4.1 made worse. That version changed iOS's touch-delay settings on every key press, while a finger was down, which can lose the finger-up and with it the letter. Reverted: only the start-of-touch delay is switched off, once, when the keyboard appears, as before 0.4.1. The edge-swipe preference was removed too.

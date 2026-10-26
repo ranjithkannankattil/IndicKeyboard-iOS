@@ -17,6 +17,9 @@ final class Composer {
     /// Context snapshots used to tell our own edits apart from the user moving the cursor.
     private var wordStartContext: String?
     private var lastContext: String?
+    /// Every version of the current word we have sent. When typing fast, the app's report
+    /// for an earlier key arrives after later keys, so any of these is "our own edit".
+    private var shownHistory: [String] = []
 
     var isComposing: Bool { !keys.isEmpty }
 
@@ -83,6 +86,7 @@ final class Composer {
         if useMarkedText, isComposing { proxy().unmarkText() }
         keys = ""
         shown = ""
+        shownHistory = []
         wordStartContext = nil
         lastContext = nil
     }
@@ -95,6 +99,8 @@ final class Composer {
         let explained = ctx == lastContext
             || (!shown.isEmpty && ctx.hasSuffix(shown))
             || ctx == (wordStartContext ?? "\u{0}")
+            || shownHistory.contains { !$0.isEmpty && ctx.hasSuffix($0) }
+            || (wordStartContext.map { ctx.hasPrefix($0) && ctx.count - $0.count <= keys.count + 2 } ?? false)
         if !explained { reset() }
     }
 
@@ -113,6 +119,8 @@ final class Composer {
             directUpdate(to: s)
         }
         shown = s
+        shownHistory.append(s)
+        if shownHistory.count > 40 { shownHistory.removeFirst() }
         lastContext = proxy().documentContextBeforeInput
     }
 
@@ -126,6 +134,7 @@ final class Composer {
         }
         keys = ""
         shown = ""
+        shownHistory = []
         wordStartContext = nil
         lastContext = nil
     }
