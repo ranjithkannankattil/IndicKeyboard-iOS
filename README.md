@@ -6,6 +6,26 @@ A Malayalam keyboard for iPhone and iPad, ported from the open-source Android [I
 
 **Current version: 0.3.1 (alpha)** — see [CHANGELOG.md](CHANGELOG.md) for every version and change.
 
+## How do I get it on my iPhone?
+
+**Short answer: you need a Mac, a free Apple ID and about 30–60 minutes.** It's free, and you don't need to know how to code.
+
+- ❌ **There is no file to download and tap.** iPhones don't allow installing apps from downloaded files. Apps come from the App Store, from TestFlight, or are built yourself.
+- ❌ **It is not on the App Store yet.** It's still in alpha testing.
+- ✅ **You can install it yourself:** download this project, open it in Apple's free **Xcode** app on a Mac, plug in your iPhone and press ▶. Xcode builds the app and puts it on your phone.
+
+### 👉 Follow the step-by-step guide: [docs/INSTALL.md](docs/INSTALL.md)
+
+It explains every click, from installing Xcode to turning the keyboard on, plus what to do if something goes wrong.
+
+| You have… | Can you use it? |
+|---|---|
+| Mac + iPhone/iPad (iOS 16 or newer) | ✅ Yes, follow the guide |
+| Only an iPhone, no Mac | ❌ Not yet. Ask a friend with a Mac to install it for you, or wait for an App Store / TestFlight release |
+| An Android phone | Use the original [Indic Keyboard](https://f-droid.org/en/packages/org.smc.inputmethod.indic/) from F-Droid |
+
+*With a free Apple ID, the app needs re-installing from Xcode every 7 days (one click). A paid Apple Developer account removes this.*
+
 ## Features
 
 - **Swanalekha** phonetic typing (default), using SMC's official rules, with the alternatives for the last letter in the bar above the keys (`ka` → ക ഗ ഖ ഘ) and a `~` key for chillu (`njaan~` → ഞാൻ).
